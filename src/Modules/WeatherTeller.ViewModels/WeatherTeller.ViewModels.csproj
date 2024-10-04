@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WeatherTeller.Services.Core\WeatherTeller.Services.Core.csproj" />
+      <ProjectReference Include="..\WeatherTeller.ViewModels.Core\WeatherTeller.ViewModels.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="8.1.0" />
+      <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="12.1.0" />
+      <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+    </ItemGroup>
+
+</Project>
