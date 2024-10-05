@@ -1,22 +1,21 @@
 ﻿using Microsoft.Extensions.Hosting;
 using WeatherTeller.Services.Core.WeatherApi;
 
-namespace WeatherTeller.Services.WeatherApi
+namespace WeatherTeller.Services.WeatherApi;
+
+internal class RefreshingBackgroundService(IWeatherApi weatherApi) : BackgroundService
 {
-    public class RefreshingBackgroundService(IWeatherApi weatherApi) : BackgroundService
+    private readonly IWeatherApi _weatherApi = weatherApi;
+    private const long RefreshInterval = 1000 * 60 * 15; // 15 minutes
+    private static readonly TimeSpan RefreshDelay = TimeSpan.FromSeconds(RefreshInterval);
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        private readonly IWeatherApi _weatherApi = weatherApi;
-        private const long RefreshInterval = 1000 * 60 * 15; // 15 minutes
-        private static readonly TimeSpan RefreshDelay = TimeSpan.FromSeconds(RefreshInterval);
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        while (!stoppingToken.IsCancellationRequested)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                await _weatherApi.Refresh();
+            await _weatherApi.Refresh();
 
-                await Task.Delay(RefreshDelay, stoppingToken);
-            }
+            await Task.Delay(RefreshDelay, stoppingToken);
         }
     }
 }

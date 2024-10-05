@@ -1,16 +1,14 @@
 ﻿using System.Collections.Immutable;
 using WeatherTeller.Services.Core.WeatherApi.Models;
 
-namespace WeatherTeller.Services.Core.WeatherApi
+namespace WeatherTeller.Services.Core.WeatherApi;
+
+public interface IWeatherApi
 {
-    public interface IWeatherApi
-    {
-        IObservable<WeatherState> Current { get; }
-        IObservable<WeatherForecastDay> Tomorrow { get; }
-        IObservable<ImmutableList<WeatherForecastDay>> Days { get; }
+    IObservable<WeatherState> Current { get; }
+    IObservable<ImmutableList<WeatherForecastDay>> Days { get; }
     
-        Task SetLocation(double latitude, double longitude);
+    Task SetLocation(double latitude, double longitude);
     
-        Task Refresh();
-    }
+    Task Refresh();
 }

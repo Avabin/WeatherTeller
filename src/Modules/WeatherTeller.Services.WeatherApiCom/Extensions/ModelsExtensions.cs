@@ -3,7 +3,7 @@ using WeatherTeller.Services.WeatherApiCom.Models;
 
 namespace WeatherTeller.Services.WeatherApiCom.Extensions;
 
-public static class ModelsExtensions {
+internal static class ModelsExtensions {
     // From WeatherApiCom.Models.WeatherState to WeatherTeller.Services.Core.WeatherState
     internal static Core.WeatherApi.Models.WeatherState ToCoreModel(this WeatherState weatherState, WeatherLocation location) =>
         new()
@@ -12,11 +12,12 @@ public static class ModelsExtensions {
             TemperatureF = weatherState.TempF,
             Condition = weatherState.Condition.Text,
             Location = location.Name,
-            Precipitation = weatherState.PrecipitationMm
+            Precipitation = weatherState.PrecipitationMm,
+            Pressure = weatherState.PressureMb
         };
 
     // From WeatherApiCom.Models.WeatherForecast to WeatherTeller.Services.Core.WeatherForecast
-    internal static Core.WeatherApi.Models.WeatherForecast ToCoreModel(this WeatherForecast forecast,
+    internal static Core.WeatherApi.Models.WeatherForecast ToCoreModel(this Models.WeatherForecast forecast,
         WeatherLocation location) =>
         new()
         {
@@ -34,20 +35,8 @@ public static class ModelsExtensions {
                 TemperatureC = forecastDay.Day.AvgTempCelsius,
                 TemperatureF = forecastDay.Day.AvgTempFahrenheit,
                 Condition = forecastDay.Day.Condition.Text,
-                Precipitation = forecastDay.Day.TotalPrecipitationMm
+                Precipitation = forecastDay.Day.TotalPrecipitationMm,
+                Pressure = forecastDay.Hours.Select(x => x.PressureMb).Average()
             }
         };
 }
-
-public record ErrorResponse(
-    [property: JsonPropertyName("error")]
-    Error Error
-);
-
-public record Error(
-    [property: JsonPropertyName("code")]
-    int Code,
-    [property: JsonPropertyName("message")]
-    string Message
-);
-

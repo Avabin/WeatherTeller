@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 [assembly: InternalsVisibleTo("WeatherTeller.Tests")]
-[assembly: InternalsVisibleTo("WeatherTeller.Avalonia")]
+[assembly: InternalsVisibleTo("WeatherTeller")]
 
 namespace WeatherTeller.Infrastructure;
 

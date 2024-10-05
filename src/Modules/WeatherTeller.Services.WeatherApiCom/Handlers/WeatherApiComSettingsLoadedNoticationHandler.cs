@@ -1,20 +1,12 @@
 ﻿using MediatR;
 using WeatherTeller.Services.Core.Settings;
-using WeatherTeller.Services.WeatherApiCom.Interfaces;
+using WeatherTeller.Services.WeatherApiCom.Client.Interfaces;
 
 namespace WeatherTeller.Services.WeatherApiCom.Handlers;
 
-public class WeatherApiComSettingsLoadedNotificationHandler : INotificationHandler<SettingsLoadedNotification>
+internal class WeatherApiComSettingsLoadedNotificationHandler(IWeatherApiComClient weatherApiComClient)
+    : INotificationHandler<SettingsLoadedNotification>
 {
-    private readonly IWeatherApiComClient _weatherApiComClient;
-
-    public WeatherApiComSettingsLoadedNotificationHandler(IWeatherApiComClient weatherApiComClient)
-    {
-        _weatherApiComClient = weatherApiComClient;
-    }
-
-    public async Task Handle(SettingsLoadedNotification notification, CancellationToken cancellationToken)
-    {
-        await _weatherApiComClient.SetSettings(notification.ApiKey, notification.Latitude, notification.Longitude);
-    }
+    public async Task Handle(SettingsLoadedNotification notification, CancellationToken cancellationToken) => 
+        await weatherApiComClient.SetSettings(notification.ApiKey, notification.Latitude, notification.Longitude);
 }

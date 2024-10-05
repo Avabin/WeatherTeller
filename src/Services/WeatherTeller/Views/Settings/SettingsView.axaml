@@ -1,0 +1,23 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:settings="clr-namespace:WeatherTeller.ViewModels.Settings;assembly=WeatherTeller.ViewModels"
+             x:Class="WeatherTeller.Views.Settings.SettingsView"
+             x:DataType="settings:SettingsViewModel">
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto">
+        <!-- Your existing UI elements -->
+        <TextBox x:Name="ApiKeyTextBox"
+                 Watermark="Enter API Key"
+                 Text="{Binding ApiKey}" />
+
+        <TextBox Grid.Row="1" x:Name="LatitudeTextBox"
+                 Watermark="Enter Latitude"
+                 Text="{Binding Latitude, Mode=TwoWay}" />
+
+        <TextBox Grid.Row="2" x:Name="LongitudeTextBox"
+                 Watermark="Enter Longitude"
+                 Text="{Binding Longitude, Mode=TwoWay}" />
+
+        <Button Grid.Row="3" Content="Save Settings"
+                Command="{Binding SaveSettingsCommand}" />
+    </Grid>
+</UserControl>

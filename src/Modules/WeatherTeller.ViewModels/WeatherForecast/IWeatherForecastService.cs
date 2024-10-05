@@ -13,4 +13,5 @@ internal interface IWeatherForecastService
     void AddRange(IEnumerable<WeatherForecastDay> forecastDays);
     
     void SetCurrentWeatherState(WeatherState state);
+    Task Refresh();
 }

@@ -11,6 +11,8 @@ internal class WeatherStateViewModel : ViewModelBase
     [Reactive] public double TemperatureC { get; set; }
     [Reactive] public double TemperatureF { get; set; }
     [Reactive] public double Precipitation { get; set; }
+    
+    [Reactive] public double Pressure { get; set; }
 
     public WeatherStateViewModel(WeatherState state)
     {
@@ -19,5 +21,6 @@ internal class WeatherStateViewModel : ViewModelBase
         TemperatureC = state.TemperatureC;
         TemperatureF = state.TemperatureF;
         Precipitation = state.Precipitation;
+        Pressure = state.Pressure;
     }
 }

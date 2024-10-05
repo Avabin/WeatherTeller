@@ -6,6 +6,7 @@ public readonly record struct Id<T>(T Value) : IComparable<Id<T>>
     public static Id<T> New(T value) => new(value);
 
     public bool Equals(Id<T> other) => this.Value.Equals(other.Value);
+    public bool Equals(Id<T>? other) => other is not null && Equals(other);
     public int CompareTo(Id<T> other) => Value switch
     {
         IComparable<T> comparable => comparable.CompareTo(other.Value),

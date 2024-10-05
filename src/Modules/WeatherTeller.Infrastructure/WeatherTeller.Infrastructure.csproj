@@ -9,8 +9,8 @@
 
     <ItemGroup>
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
-      <PackageReference Include="Avalonia" Version="11.1.0" />
-      <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.0" />
+      <PackageReference Include="Avalonia" Version="11.1.3" />
+      <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.3" />
       <PackageReference Include="MessageBox.Avalonia" Version="3.1.6" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
@@ -26,8 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\WeatherTeller.Persistence.EntityFramework\WeatherTeller.Persistence.EntityFramework.csproj" />
       <ProjectReference Include="..\WeatherTeller.Persistence.LiteDb\WeatherTeller.Persistence.LiteDb.csproj" />
-      <ProjectReference Include="..\WeatherTeller.Services.WeatherApiCom\WeatherTeller.Services.WeatherApiCom.csproj" />
       <ProjectReference Include="..\WeatherTeller.ViewModels.Core\WeatherTeller.ViewModels.Core.csproj" />
     </ItemGroup>
 

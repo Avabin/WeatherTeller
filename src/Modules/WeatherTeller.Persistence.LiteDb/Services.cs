@@ -1,5 +1,7 @@
 ﻿using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
+using WeatherTeller.Persistence.LiteDb.Settings;
+using WeatherTeller.Persistence.Settings;
 
 namespace WeatherTeller.Persistence.LiteDb;
 

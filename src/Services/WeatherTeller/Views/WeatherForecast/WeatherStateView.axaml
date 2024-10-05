@@ -1,0 +1,33 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:weatherForecast="clr-namespace:WeatherTeller.ViewModels.WeatherForecast;assembly=WeatherTeller.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:weatherForecast1="clr-namespace:WeatherTeller.Views.WeatherForecast"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WeatherTeller.Views.WeatherForecast.WeatherStateView"
+             x:DataType="weatherForecast:WeatherStateViewModel"
+             Background="{DynamicResource GradientBackgroundBrush}"
+             x:Name="Root">
+    <UserControl.Resources>
+        <weatherForecast1:DoubleToIntConverter x:Key="DoubleToIntConverter" />
+    </UserControl.Resources>
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto">
+        <TextBlock IsEnabled="False" Text="{Binding Location, FallbackValue=''}" HorizontalAlignment="Center"
+                   VerticalAlignment="Top" Margin="10" />
+        <TextBlock Grid.Row="1" IsEnabled="False"
+                   Text="{Binding TemperatureC, FallbackValue='',StringFormat='{}{0}°C'}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" />
+        <TextBlock Grid.Row="2" IsEnabled="False" Text="{Binding Condition, FallbackValue=''}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" />
+        <TextBlock Grid.Row="3" IsEnabled="False"
+                   Text="{Binding Precipitation, FallbackValue='',StringFormat='{}{0}mm'}"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" />
+
+        <!-- Pressure information without decimal places -->
+        <TextBlock Grid.Row="4" IsEnabled="False"
+                   Text="{Binding Pressure, FallbackValue='',Converter={StaticResource DoubleToIntConverter},StringFormat='{}{0}hPa'}"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" />
+    </Grid>
+</UserControl>

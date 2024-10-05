@@ -4,16 +4,16 @@ using Commons.ReactiveCommandGenerator.Core;
 using MediatR;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using WeatherTeller.Persistence.Models;
 using WeatherTeller.Services.Core.Settings;
+using WeatherTeller.Services.Core.Settings.Commands;
+using WeatherTeller.Services.Core.Settings.Requests;
 using WeatherTeller.ViewModels.Core;
-using Unit = System.Reactive.Unit;
 
 namespace WeatherTeller.ViewModels.Settings;
 
 internal partial class SettingsViewModel : ViewModelBase, IActivatableViewModel, IRoutableViewModel
 {
-    private readonly ISettingsRepository _settingsRepository;
+    private readonly IMediator _mediator;
     
     [Reactive] public string ApiKey { get; set; } = string.Empty;
     [Reactive] public double Latitude { get; set; } = 0;
@@ -22,21 +22,20 @@ internal partial class SettingsViewModel : ViewModelBase, IActivatableViewModel,
     [ReactiveCommand]
     private async Task SaveSettings()
     {
-        await _settingsRepository.UpdateSettingsAsync(settings => settings with
-        {
-            ApiKey = ApiKey,
-            Location = new Location("Custom", Latitude, Longitude),
-        });
+        await _mediator.Send(new UpdateSettingsCommand(Update));
+        return;
+
+        SettingsModel Update(SettingsModel settings) => settings with { ApiKey = ApiKey, Location = new SettingsLocation("New York", Latitude, Longitude), };
     }
 
-    public SettingsViewModel(ISettingsRepository settingsRepository, IScreen hostScreen)
+    public SettingsViewModel(IMediator mediator, IScreen hostScreen)
     {
-        _settingsRepository = settingsRepository;
+        _mediator = mediator;
         HostScreen = hostScreen;
 
         this.WhenActivated(disposables =>
         {
-            _settingsRepository.GetSettingsAsync()
+            mediator.Send(new GetSettingsRequest())
                 .ToObservable()
                 .Subscribe(settings =>
                 {

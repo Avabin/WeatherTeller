@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Globalization;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -16,17 +17,14 @@ using Serilog.Events;
 using Serilog.Formatting.Compact;
 using Splat;
 using Splat.Autofac;
+using WeatherTeller.Persistence.EntityFramework;
 using WeatherTeller.Persistence.LiteDb;
-using WeatherTeller.Services;
-using WeatherTeller.Services.WeatherApiCom;
-using WeatherTeller.Services.WeatherApiCom.Extensions;
-using WeatherTeller.Services.WeatherApiCom.Models;
 
 namespace WeatherTeller.Infrastructure;
 
 public class AppHost
 {
-    public static string AppName = "WeatherTeller.Avalonia";
+    public static string AppName = "WeatherTeller";
     public static string AvaloniaResourceUriBase = $"avares://{AppName}/";
     public static string AvaloniaResourceUriAssetsBase = $"avares://{AppName}/Assets/";
     public static Uri GetResourceUri(string path) => new Uri($"{AvaloniaResourceUriBase}{path}");
@@ -51,6 +49,13 @@ public class AppHost
 
     public AppHost()
     {
+        // set culture to invariant
+        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+        
+        
         _host = new Lazy<IHost>(() => Builder.Build(), LazyThreadSafetyMode.ExecutionAndPublication);
         _builder = new Lazy<IHostBuilder>(CreateHostBuilder, LazyThreadSafetyMode.ExecutionAndPublication);
     }
@@ -72,11 +77,10 @@ public class AppHost
         builder.ConfigureLogging(ConfigureLogging);
         builder.ConfigureServices((Action<HostBuilderContext, IServiceCollection>)ConfigureServices);
 
-
         return builder;
     }
 
-    private void ConfigureHostConfiguration(IConfigurationBuilder builder)
+    protected virtual void ConfigureHostConfiguration(IConfigurationBuilder builder)
     {
         if (!Design.IsDesignMode)
         {
@@ -119,7 +123,7 @@ public class AppHost
         }
     }
 
-    private void ConfigureLogging(HostBuilderContext ctx, ILoggingBuilder builder)
+    protected virtual void ConfigureLogging(HostBuilderContext ctx, ILoggingBuilder builder)
     {
         var seqSection = ctx.Configuration.GetSection("Seq");
         var maybeSeqUrl = seqSection?.GetValue<string>("ServerUrl");
@@ -143,17 +147,13 @@ public class AppHost
             .CreateLogger());
     }
 
-    private void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
+    protected virtual void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
     {
         services.AddSingleton(ctx.HostingEnvironment.ContentRootFileProvider);
         services.AddSingleton(MessageBus.Current);
-        services.AddLiteDb(Design.IsDesignMode
-            ? System.IO.Path.Combine(Path, "teller-design.db")
-            : System.IO.Path.Combine(Path, "teller.db"));
-        // get section
-        var weatherApiCom = ctx.Configuration.GetSection(WeatherApiComClientOptions.SectionName);
-        
-        services.AddWeatherApiCom(weatherApiCom).AddServices();
+        services.AddWeatherTellerSqlite(Design.IsDesignMode
+            ? System.IO.Path.Combine(Path, "teller-design.sqlite")
+            : System.IO.Path.Combine(Path, "teller.sqlite"));
     }
 
     private void ConfigureContainer(ContainerBuilder builder)
@@ -176,14 +176,14 @@ public class AppHost
     public void Build()
     {
         _ = _builder.Value;
+        var container = Host.Services.GetAutofacRoot();
+        var serviceProvider = container.Resolve<IServiceProvider>();
+        Services = serviceProvider;
     }
 
     public void Start()
     {
-        var container = Host.Services.GetAutofacRoot();
-        var serviceProvider = container.Resolve<IServiceProvider>();
-        Services = serviceProvider;
-        var logger = serviceProvider.GetRequiredService<ILogger<AppHost>>();
+        var logger = Services.GetRequiredService<ILogger<AppHost>>();
         AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
         {
             logger.LogError((Exception)args.ExceptionObject, "Unhandled exception");
@@ -208,9 +208,7 @@ public class AppHost
 
     public void Stop()
     {
-        _ = Host.StopAsync(TimeSpan.FromSeconds(2));
-        Host.WaitForShutdown();
-        Host.Dispose();
+        Task.Run(async () => await StopAsync());
     }
 
     public async Task StopAsync()

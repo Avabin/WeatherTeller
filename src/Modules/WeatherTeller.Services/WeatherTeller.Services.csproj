@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\WeatherTeller.Essentials.Core\WeatherTeller.Essentials.Core.csproj" />
       <ProjectReference Include="..\WeatherTeller.Persistence\WeatherTeller.Persistence.csproj" />
       <ProjectReference Include="..\WeatherTeller.Services.Core\WeatherTeller.Services.Core.csproj" />
     </ItemGroup>
@@ -15,12 +16,8 @@
     <ItemGroup>
       <PackageReference Include="MediatR" Version="12.4.1" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+      <PackageReference Include="Riok.Mapperly" Version="3.6.0" />
       <PackageReference Include="System.Reactive" Version="6.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Notifications\" />
-      <Folder Include="Requests\" />
     </ItemGroup>
 
 </Project>

@@ -1,0 +1,38 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:weatherForecast="clr-namespace:WeatherTeller.Views.WeatherForecast">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <DataGrid>
+                <DataGrid.ItemsSource>
+                    <system:Array>
+                        <system:String>Item 1</system:String>
+                        <system:String>Item 2</system:String>
+                        <system:String>Item 3</system:String>
+                    </system:Array>
+                </DataGrid.ItemsSource>
+            </DataGrid>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="DataGrid">
+        <Setter Property="Background" Value="{DynamicResource DataGridGradientBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MainBackgroundBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Margin" Value="5" />
+    </Style>
+    <Style Selector="DataGridColumnHeader">
+        <Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MainBackgroundBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Margin" Value="5" />
+    </Style>
+    
+
+</Styles>

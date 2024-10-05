@@ -1,5 +1,4 @@
-﻿using System.Reactive;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using Commons.ReactiveCommandGenerator.Core;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
