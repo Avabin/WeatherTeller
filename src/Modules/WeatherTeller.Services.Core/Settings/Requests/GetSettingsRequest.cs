@@ -2,7 +2,7 @@
 
 namespace WeatherTeller.Services.Core.Settings.Requests;
 
-public record GetSettingsRequest : IRequest<SettingsModel>
+public record GetSettingsRequest : IRequest<SettingsModel?>
 {
     
 }

@@ -28,7 +28,7 @@ internal class SettingsRepository : ISettingsRepository
         _logger = logger;
     }
 
-    public async Task<SettingsModel> GetSettingsAsync()
+    public async Task<SettingsModel?> GetSettingsAsync()
     {
         var currentUserName = Environment.UserName;
         var settings = await _settingsDataSource.GetById(currentUserName)
@@ -38,20 +38,17 @@ internal class SettingsRepository : ISettingsRepository
         {
             return settings.ToSettingsModel();
         }
-        
-        _logger.LogInformation("Settings not found for user {UserName}", currentUserName);
-        var newSettings = new Persistence.Settings.Settings
-        {
-            Id = new Id<string>(currentUserName),
-            Location = new Location("New York", 40.7128, -74.0060),
-        };
-            
-        await _settingsDataSource.Add(newSettings);
-        _logger.LogInformation("Settings created for user {UserName}", currentUserName);
-
-        return newSettings.ToSettingsModel();
+        _logger.LogWarning("Settings not found for user {UserName}", currentUserName);
+        return null;
     }
-    
+
+    public async Task CreateSettingsAsync(SettingsModel settings)
+    {
+        _logger.LogInformation("Creating settings for user {UserName}", Environment.UserName);
+        await _settingsDataSource.Add(settings.ToPersistenceModel());
+        await _mediator.Publish(SettingsEntityChangedNotification.Of(settings));
+    }
+
     public async Task UpdateSettingsAsync(Func<SettingsModel, SettingsModel> update)
     {
         var currentUserName = Environment.UserName;

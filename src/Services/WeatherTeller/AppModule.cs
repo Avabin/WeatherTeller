@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using ReactiveUI;
 using WeatherTeller.ViewModels;
+using WeatherTeller.ViewModels.Configuration;
 using WeatherTeller.ViewModels.WeatherForecast;
 using WeatherTeller.ViewModels.WeatherForecast.CurrentWeather;
 using WeatherTeller.ViewModels.WeatherForecast.ForecastDay;
+using WeatherTeller.Views.Configuration;
 using WeatherTeller.Views.WeatherForecast;
 using MainView = WeatherTeller.Views.Main.MainView;
 using MainViewModel = WeatherTeller.ViewModels.Main.MainViewModel;
@@ -29,5 +31,9 @@ public class AppModule : Module
         builder.RegisterType<WeatherForecastsView>().AsSelf().AsImplementedInterfaces().As<IViewFor<WeatherForecastsViewModel>>();
         builder.RegisterType<CurrentWeatherForecastView>().AsSelf().AsImplementedInterfaces().As<IViewFor<CurrentWeatherForecastViewModel>>();
         builder.RegisterType<WeatherForecastDayView>().AsSelf().AsImplementedInterfaces().As<IViewFor<WeatherForecastDayViewModel>>();
+        
+        builder.RegisterType<ConfigurationWizardView>().AsSelf().AsImplementedInterfaces().As<IViewFor<ConfigurationWizardViewModel>>();
+        builder.RegisterType<ConfigureLocationView>().AsSelf().AsImplementedInterfaces().As<IViewFor<ConfigureLocationViewModel>>();
+        builder.RegisterType<ConfigureApiKeyView>().AsSelf().AsImplementedInterfaces().As<IViewFor<ConfigureApiKeyViewModel>>();
     }
 }

@@ -15,6 +15,10 @@
           <MenuItem Header="Settings" Command="{Binding NavigateToSettingsCommand}" />
           <MenuItem Header="Forecast" Command="{Binding NavigateToWeatherForecastsCommand}" />
       </Menu>
-      <reactiveUi:RoutedViewHost Grid.Row="1" DefaultContent="Nothing to route" Router="{Binding Router}" />
+      <reactiveUi:RoutedViewHost Grid.Row="1" DefaultContent="Nothing to route" Router="{Binding Router}">
+          <reactiveUi:RoutedViewHost.PageTransition>
+              <PageSlide Duration="0:0:0.5" />
+          </reactiveUi:RoutedViewHost.PageTransition>
+      </reactiveUi:RoutedViewHost>
   </Grid>
 </UserControl>

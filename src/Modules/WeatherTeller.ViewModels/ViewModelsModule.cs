@@ -22,5 +22,10 @@ public class ViewModelsModule : Module
         builder.RegisterType<WeatherStateViewModelFactory>().As<IWeatherStateViewModelFactory>().SingleInstance();
         builder.RegisterType<WeatherForecastDayViewModelFactory>().As<IWeatherForecastDayViewModelFactory>().SingleInstance();
         builder.RegisterType<CurrentWeatherForecastViewModel>().AsSelf().As<ViewModelBase>().As<IActivatableViewModel>().SingleInstance();
+        
+        builder.RegisterType<Configuration.ConfigurationWizardViewModel>().AsSelf().As<ViewModelBase>().As<IRoutableViewModel>();
+        builder.RegisterType<Configuration.ConfigurationWizardViewModelFactory>().AsSelf();
+        builder.RegisterType<Configuration.ConfigureLocationViewModel>().AsSelf().As<ViewModelBase>().SingleInstance();
+        builder.RegisterType<Configuration.ConfigureApiKeyViewModel>().AsSelf().As<ViewModelBase>().SingleInstance();
     }
 }

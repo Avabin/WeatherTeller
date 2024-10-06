@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Hosting;
+using WeatherTeller.Services.Core.Settings;
 
 namespace WeatherTeller.Services.Settings;
 
@@ -18,6 +19,14 @@ internal class LoadSettingsStartupTask : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var settings = await _repository.GetSettingsAsync();
-        await _mediator.Publish(SettingsEntityChangedNotification.Of(settings), stoppingToken);
+        if (settings is null)
+        {
+            var userName = Environment.UserName;
+            var newSettings = new SettingsModel(userName, null, "");
+            await _repository.CreateSettingsAsync(newSettings);
+            settings = newSettings;
+        }
+
+        await _mediator.Publish(SettingsLoadedNotification.Of(settings), stoppingToken);
     }
 }

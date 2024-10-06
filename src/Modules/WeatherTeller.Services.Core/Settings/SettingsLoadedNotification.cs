@@ -8,5 +8,6 @@ public record SettingsLoadedNotification(
     double Longitude
 ) : INotification
 {
-    
+    public static SettingsLoadedNotification Of(SettingsModel settings) => 
+        new(settings.ApiKey, settings.Location?.Latitude ?? 0, settings.Location?.Longitude ?? 0);
 }

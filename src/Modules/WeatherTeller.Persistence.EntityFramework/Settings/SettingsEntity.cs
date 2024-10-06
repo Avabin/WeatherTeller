@@ -5,7 +5,7 @@ using WeatherTeller.Services.Core.Settings;
 namespace WeatherTeller.Persistence.EntityFramework.Settings;
 
 
-internal record SettingsEntity
+internal record SettingsEntity : IHasId<string>
 {
     public string Id { get; set; } = string.Empty;
     public LocationEntity? Location { get; set; } = null;

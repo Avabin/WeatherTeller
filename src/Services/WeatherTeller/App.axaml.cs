@@ -1,7 +1,9 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using WeatherTeller.Infrastructure;
 using WeatherTeller.Persistence.EntityFramework;
 using MainView = WeatherTeller.Views.Main.MainView;
@@ -34,6 +36,7 @@ public partial class App : Application
         Host.Start();
         // on environment exit
         var vm = Host.Services.GetRequiredService<MainViewModel>();
+        vm.CheckSettingsCommand.Execute().Subscribe(unit => Host.Services.GetRequiredService<ILogger<App>>().LogInformation("Settings checked"));
         switch (ApplicationLifetime)
         {
             case IClassicDesktopStyleApplicationLifetime desktop:
