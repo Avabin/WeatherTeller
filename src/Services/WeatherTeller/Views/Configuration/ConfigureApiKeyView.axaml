@@ -6,9 +6,9 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WeatherTeller.Views.Configuration.ConfigureApiKeyView"
              x:DataType="configuration:ConfigureApiKeyViewModel">
-    <StackPanel>
-        <TextBlock Text="Enter your API key:"/>
-        <TextBox Text="{Binding ApiKey, Mode=TwoWay}"/>
-        <Button Content="Save" Command="{Binding SaveCommand}"/>
-    </StackPanel>
+    <Grid RowDefinitions="Auto, Auto, *, Auto">
+        <TextBlock Text="Enter your API key" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Margin="10"/>
+        <TextBox Grid.Row="1" Text="{Binding ApiKey, Mode=TwoWay}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <Button Grid.Row="3" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" Margin="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+    </Grid>
 </UserControl>

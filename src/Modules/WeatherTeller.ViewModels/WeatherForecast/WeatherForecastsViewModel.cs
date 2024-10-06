@@ -1,14 +1,11 @@
 ﻿using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Avalonia.Layout;
 using Commons.ReactiveCommandGenerator.Core;
 using DynamicData;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using WeatherTeller.ViewModels.Core;
-using WeatherTeller.ViewModels.WeatherForecast.CurrentWeather;
 using WeatherTeller.ViewModels.WeatherForecast.ForecastDay;
 
 namespace WeatherTeller.ViewModels.WeatherForecast;
@@ -20,14 +17,14 @@ internal partial class WeatherForecastsViewModel : ViewModelBase, IActivatableVi
     
     private TimeProvider _timeProvider;
 
-    public IObservableCollection<WeatherForecastDayViewModel> Forecasts { get; } = new ObservableCollectionExtended<WeatherForecastDayViewModel>();
-    [Reactive] public CurrentWeatherForecastViewModel CurrentWeather { get; set; }
+    public IObservableCollection<WeatherForecastDayViewModel> Forecasts { get; } =
+        new ObservableCollectionExtended<WeatherForecastDayViewModel>();
     
     private IObservable<DateTimeOffset> _currentTime;
     
     public IObservable<DateTimeOffset> CurrentTime => _currentTime.ObserveOn(RxApp.MainThreadScheduler).SubscribeOn(RxApp.MainThreadScheduler);
 
-    public WeatherForecastsViewModel(ILogger<WeatherForecastsViewModel> logger, CurrentWeatherForecastViewModel currentWeather, IWeatherForecastService forecastService, IScreen hostScreen, TimeProvider? timeProvider = null)
+    public WeatherForecastsViewModel(ILogger<WeatherForecastsViewModel> logger, IWeatherForecastService forecastService, IScreen hostScreen, TimeProvider? timeProvider = null)
     {
         _timeProvider = timeProvider ?? TimeProvider.System;
         
@@ -36,7 +33,6 @@ internal partial class WeatherForecastsViewModel : ViewModelBase, IActivatableVi
             .Publish()
             .RefCount();
         
-        CurrentWeather = currentWeather;
         HostScreen = hostScreen;
         _logger = logger;
         _forecastService = forecastService;

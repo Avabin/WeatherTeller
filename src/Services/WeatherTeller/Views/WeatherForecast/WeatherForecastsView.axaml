@@ -8,39 +8,47 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WeatherTeller.Views.WeatherForecast.WeatherForecastsView"
              x:DataType="weatherForecast:WeatherForecastsViewModel">
-    <Grid RowDefinitions="Auto, *, Auto" ColumnDefinitions="*">
-
-        <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <WrapPanel Orientation="Horizontal">
-                <weatherForecast1:WeatherStateView DataContext="{Binding CurrentWeather.WeatherState}" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" />
-                
-                <!-- Use ListView instead of ItemsControl -->
-                <ListBox ItemsSource="{Binding Forecasts}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Expander HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                                <Expander.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Date, FallbackValue='', StringFormat='{}{0:dddd, dd MMMM yyyy}'}" 
-                                                   Margin="10"/>
-                                        <TextBlock Text="{Binding State.TemperatureC, FallbackValue='', StringFormat='{}{0}°C'}" Margin="10"/>
-                                    </StackPanel>
-                                </Expander.Header>
-                                <weatherForecast1:WeatherForecastDayView DataContext="{Binding}"
-                                                                         HorizontalAlignment="Stretch"
-                                                                         HorizontalContentAlignment="Stretch"
-                                                                         VerticalAlignment="Top"
-                                                                         VerticalContentAlignment="Top"
-                                                                         Margin="10"/>
-                            </Expander>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </WrapPanel>
+    <Grid RowDefinitions="10*, Auto, Auto" ColumnDefinitions="*">
+        <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+            <ItemsRepeater ItemsSource="{Binding Forecasts}" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <Expander HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5,0,5,5">
+                            <Expander.Header>
+                                <Grid ColumnDefinitions="4*, *, 1*, 1*, 1*" Background="{DynamicResource SystemAltMediumColor}">
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Text="{Binding Date, FallbackValue='', StringFormat='{}{0:dddd, dd MMMM yyyy}'}"
+                                        Margin="10" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        Text="{Binding State.TemperatureC, FallbackValue='', StringFormat='{}{0}°C'}"
+                                        Margin="10" />
+                                    <TextBlock
+                                        Grid.Column="3"
+                                        Text="{Binding State.Condition, FallbackValue=''}"
+                                        Margin="10" />
+                                    <TextBlock
+                                        Grid.Column="4"
+                                        Text="{Binding State.Precipitation, FallbackValue='', StringFormat='{}{0}mm'}"
+                                        Margin="10" />
+                                </Grid>
+                            </Expander.Header>
+                            <weatherForecast1:WeatherForecastDayView DataContext="{Binding}"
+                                                                     HorizontalAlignment="Stretch"
+                                                                     HorizontalContentAlignment="Stretch"
+                                                                     VerticalAlignment="Top"
+                                                                     VerticalContentAlignment="Top"
+                                                                     Margin="10" />
+                        </Expander>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
         </ScrollViewer>
-        
-        <Grid Grid.Row="2" Grid.Column="0">
-            <Button Content="Refresh" Command="{Binding RefreshCommand}"  Margin="10,0,10,5"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+        <Grid Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button Content="Refresh" Command="{Binding RefreshCommand}" Margin="10,10,10,10"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
         </Grid>
     </Grid>
 </UserControl>

@@ -3,19 +3,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:configuration="clr-namespace:WeatherTeller.ViewModels.Configuration;assembly=WeatherTeller.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="600"
              x:Class="WeatherTeller.Views.Configuration.ConfigureLocationView"
                 x:DataType="configuration:ConfigureLocationViewModel">
-    <StackPanel>
-        <TextBlock Text="Enter your location:"/>
-        <TextBox Text="{Binding LocationName, Mode=TwoWay}"/>
-        <!-- lon -->
-        <TextBlock Text="Longitude:"/>
-        <TextBox Text="{Binding Longitude, Mode=TwoWay}"/>
-        <!-- lat -->
-        <TextBlock Text="Latitude:"/>
-        <TextBox Text="{Binding Latitude, Mode=TwoWay}"/>
-        <Button Content="Save" Command="{Binding SaveCommand}"/>
-    </StackPanel>
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, *, Auto">
+        <TextBlock Text="Enter your location" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Margin="10"/>
+        <TextBox Grid.Row="1" Watermark="Name" UseFloatingWatermark="True" Text="{Binding LocationName, Mode=TwoWay}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <TextBox Grid.Row="2" Watermark="Longitude" UseFloatingWatermark="True" Text="{Binding Longitude, Mode=TwoWay}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <TextBox Grid.Row="3" Watermark="Latitude" UseFloatingWatermark="True" Text="{Binding Latitude, Mode=TwoWay}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <Button Grid.Row="5" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" Margin="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+    </Grid>
         
 </UserControl>

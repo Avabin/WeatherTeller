@@ -3,17 +3,35 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:configuration="clr-namespace:WeatherTeller.ViewModels.Configuration;assembly=WeatherTeller.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:converters="clr-namespace:WeatherTeller.Converters"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
              x:Class="WeatherTeller.Views.Configuration.ConfigurationWizardView"
              x:DataType="configuration:ConfigurationWizardViewModel">
-    <Carousel ItemsSource="{Binding Pages}" SelectedIndex="{Binding CurrentPageIndex}">
-        <Carousel.PageTransition>
-            <PageSlide Duration="0:0:0.5" />
-        </Carousel.PageTransition>
-        <Carousel.ItemTemplate>
-            <DataTemplate x:DataType="configuration:ConfigurationViewModel">
-                <ContentControl Content="{Binding}" />
-            </DataTemplate>
-        </Carousel.ItemTemplate>
-    </Carousel>
+    <UserControl.Resources>
+        <converters:BoolToBrushConverter x:Key="BoolToBrushConverter" />
+    </UserControl.Resources>
+    <Grid RowDefinitions="*, Auto" >
+        <Carousel ItemsSource="{Binding Pages}" SelectedIndex="{Binding CurrentPageIndex}"
+                  Background="{DynamicResource GradientBackgroundBrush}">
+            <Carousel.PageTransition>
+                <PageSlide Duration="0:0:0.5" />
+            </Carousel.PageTransition>
+            <Carousel.ItemTemplate>
+                <DataTemplate x:DataType="configuration:ConfigurationViewModel">
+                    <ContentControl Content="{Binding}" />
+                </DataTemplate>
+            </Carousel.ItemTemplate>
+        </Carousel>
+        <ItemsRepeater Grid.Row="1" ItemsSource="{Binding Pages}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MainBackgroundBrush}">
+            <ItemsRepeater.ItemTemplate>
+                <!-- a round circle for every page, light gray when page isn't finished and green when it is -->
+                <DataTemplate x:DataType="configuration:ConfigurationViewModel">
+                    <Ellipse Width="10" Height="10" Fill="{Binding IsFinished, Converter={StaticResource BoolToBrushConverter}}" Margin="5" />
+                </DataTemplate>
+            </ItemsRepeater.ItemTemplate>
+            <ItemsRepeater.Layout>
+                <StackLayout Orientation="Horizontal" Spacing="15" />
+            </ItemsRepeater.Layout>
+        </ItemsRepeater>
+    </Grid>
 </UserControl>

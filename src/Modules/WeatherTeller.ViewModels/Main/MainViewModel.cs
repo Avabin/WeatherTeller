@@ -28,8 +28,8 @@ internal partial class MainViewModel(
     private async Task CheckSettings()
     {
         var settings = await _mediator.Send(new GetSettingsRequest());
-        var hasApiKey = !string.IsNullOrWhiteSpace(settings.ApiKey);
-        var hasLocation = settings.Location is not null && !string.IsNullOrWhiteSpace(settings.Location.Name) && settings.Location.Latitude != 0 && settings.Location.Longitude != 0;
+        var hasApiKey = !string.IsNullOrWhiteSpace(settings?.ApiKey);
+        var hasLocation = settings?.Location is not null && !string.IsNullOrWhiteSpace(settings.Location.Name) && settings.Location.Latitude != 0 && settings.Location.Longitude != 0;
         
         var needsConfiguration = !hasApiKey || !hasLocation;
         if (!needsConfiguration)
