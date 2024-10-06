@@ -1,11 +1,8 @@
 ﻿using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Reactive.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Riok.Mapperly.Abstractions;
-using WeatherTeller.Persistence;
 using WeatherTeller.Persistence.Models;
 using WeatherTeller.Persistence.Settings;
 using WeatherTeller.Services.Core.Settings;

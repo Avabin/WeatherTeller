@@ -18,7 +18,6 @@ using Serilog.Formatting.Compact;
 using Splat;
 using Splat.Autofac;
 using WeatherTeller.Persistence.EntityFramework;
-using WeatherTeller.Persistence.LiteDb;
 
 namespace WeatherTeller.Infrastructure;
 

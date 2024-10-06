@@ -4,7 +4,6 @@ using ReactiveUI.Fody.Helpers;
 using WeatherTeller.Services.Core.Settings;
 using WeatherTeller.Services.Core.Settings.Commands;
 using WeatherTeller.Services.Core.Settings.Requests;
-using WeatherTeller.ViewModels.Core;
 
 namespace WeatherTeller.ViewModels.Configuration;
 

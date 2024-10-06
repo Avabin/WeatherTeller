@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using WeatherTeller.Services.WeatherApiCom.Models;
 
 namespace WeatherTeller.Services.WeatherApiCom.Extensions;

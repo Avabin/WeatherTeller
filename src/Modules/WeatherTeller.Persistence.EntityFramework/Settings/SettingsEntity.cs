@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Riok.Mapperly.Abstractions;
+﻿using Riok.Mapperly.Abstractions;
 using WeatherTeller.Services.Core.Settings;
 
 namespace WeatherTeller.Persistence.EntityFramework.Settings;

@@ -1,7 +1,6 @@
 ﻿using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using Commons.ReactiveCommandGenerator.Core;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;

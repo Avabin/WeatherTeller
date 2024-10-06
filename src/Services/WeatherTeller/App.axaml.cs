@@ -6,9 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WeatherTeller.Infrastructure;
 using WeatherTeller.Persistence.EntityFramework;
-using MainView = WeatherTeller.Views.Main.MainView;
 using MainViewModel = WeatherTeller.ViewModels.Main.MainViewModel;
-using MainWindow = WeatherTeller.Views.Main.MainWindow;
 
 namespace WeatherTeller;
 

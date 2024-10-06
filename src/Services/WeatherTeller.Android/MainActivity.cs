@@ -1,13 +1,8 @@
-﻿using System;
-using System.Reactive.Subjects;
-using Android;
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
-using Android.OS;
 using Avalonia;
 using Avalonia.Android;
 using Avalonia.ReactiveUI;
-using Java.Lang;
 
 namespace WeatherTeller.Android;
 

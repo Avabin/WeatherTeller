@@ -1,6 +1,5 @@
 ﻿using Commons.ReactiveCommandGenerator.Core;
 using MediatR;
-using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using WeatherTeller.Services.Core.Settings.Commands;
 using WeatherTeller.Services.Core.Settings.Requests;

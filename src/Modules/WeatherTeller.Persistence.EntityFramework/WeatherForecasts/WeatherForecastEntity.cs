@@ -1,6 +1,5 @@
 ﻿using Riok.Mapperly.Abstractions;
 using WeatherTeller.Persistence.WeatherForecasts;
-using WeatherTeller.Services.Core.WeatherApi.Models;
 
 namespace WeatherTeller.Persistence.EntityFramework.WeatherForecasts;
 

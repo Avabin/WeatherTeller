@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WeatherTeller.Essentials;
-using WeatherTeller.Infrastructure;
 using WeatherTeller.Services;
 using WeatherTeller.Services.WeatherApiCom;
 using WeatherTeller.Services.WeatherApiCom.Models;
