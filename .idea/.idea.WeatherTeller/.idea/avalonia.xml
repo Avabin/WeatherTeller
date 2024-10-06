@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="src/Modules/WeatherTeller.Persistence.EntityFramework/MainWindow.axaml" value="src/Modules/WeatherTeller.Persistence.EntityFramework/WeatherTeller.Persistence.EntityFramework.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/App.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Styles/AppStyles.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/Main/MainView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/MainView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/MainWindow.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/Settings/SettingsView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/SettingsView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/WeatherForecast/CurrentWeatherForecastView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/WeatherForecast/WeatherForecastDayView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/WeatherForecast/WeatherForecastView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/WeatherForecast/WeatherForecastsView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/WeatherForecast/WeatherStateView.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia/Views/WeatherForecastsViewModel.axaml" value="src/Services/WeatherTeller.Avalonia/WeatherTeller.Avalonia.Desktop/WeatherTeller.Avalonia.Desktop.csproj" />
+        <entry key="src/Services/WeatherTeller/App.axaml" value="src/Services/WeatherTeller.Linux/WeatherTeller.Linux.csproj" />
+        <entry key="src/Services/WeatherTeller/Views/Configuration/ConfigurationWizardView.axaml" value="src/Services/WeatherTeller.Linux/WeatherTeller.Linux.csproj" />
+        <entry key="src/Services/WeatherTeller/Views/Configuration/ConfigureApiKeyView.axaml" value="src/Services/WeatherTeller.Linux/WeatherTeller.Linux.csproj" />
+        <entry key="src/Services/WeatherTeller/Views/Configuration/ConfigureLocationView.axaml" value="src/Services/WeatherTeller.Linux/WeatherTeller.Linux.csproj" />
+        <entry key="src/Services/WeatherTeller/Views/Configuration/ConfigureLocationViewModel.axaml" value="src/Services/WeatherTeller.Linux/WeatherTeller.Linux.csproj" />
+        <entry key="src/Services/WeatherTeller/Views/Main/MainView.axaml" value="src/Services/WeatherTeller.Linux/WeatherTeller.Linux.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
