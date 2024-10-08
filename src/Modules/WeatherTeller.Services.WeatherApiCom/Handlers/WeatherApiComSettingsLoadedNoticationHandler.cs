@@ -5,11 +5,13 @@ using WeatherTeller.Services.WeatherApiCom.Client.Interfaces;
 
 namespace WeatherTeller.Services.WeatherApiCom.Handlers;
 
-internal class WeatherApiComSettingsLoadedNotificationHandler(IWeatherApiComClient weatherApiComClient, ILogger<WeatherApiComSettingsLoadedNotificationHandler> logger)
+internal class WeatherApiComSettingsLoadedNotificationHandler(
+    IWeatherApiComClient weatherApiComClient,
+    ILogger<WeatherApiComSettingsLoadedNotificationHandler> logger)
     : INotificationHandler<SettingsLoadedNotification>
 {
-    private readonly IWeatherApiComClient _weatherApiComClient = weatherApiComClient;
     private readonly ILogger<WeatherApiComSettingsLoadedNotificationHandler> _logger = logger;
+    private readonly IWeatherApiComClient _weatherApiComClient = weatherApiComClient;
 
     public async Task Handle(SettingsLoadedNotification notification, CancellationToken cancellationToken)
     {

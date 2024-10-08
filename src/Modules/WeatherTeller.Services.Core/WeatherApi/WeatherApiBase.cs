@@ -19,11 +19,12 @@ public abstract class WeatherApiBase : IWeatherApi
         _mediator = mediator;
     }
 
+    protected ReplaySubject<ImmutableList<WeatherForecastDay>> DaysSubject { get; } = new(1);
+
     public IObservable<WeatherForecastDay> Current => DaysSubject
         .Select(x => x[0])
         .Where(x => x.IsToday);
-    
-    protected ReplaySubject<ImmutableList<WeatherForecastDay>> DaysSubject { get; } = new(1);
+
     public IObservable<ImmutableList<WeatherForecastDay>> Days => DaysSubject.AsObservable();
 
     public abstract Task SetLocation(double latitude, double longitude);
@@ -34,12 +35,12 @@ public abstract class WeatherApiBase : IWeatherApi
     {
         var days = forecast.Days.ToImmutableList();
         await PersistForecast(forecast);
-        
+
         _logger.LogDebug("Publishing days forecast to Subject");
         DaysSubject.OnNext(days);
     }
-    
-    
+
+
     private async Task PersistForecast(WeatherForecast forecast)
     {
         _logger.LogDebug("Persisting forecast");

@@ -9,10 +9,17 @@ public class GetWeatherForecastsHandler : IRequestHandler<GetWeatherForecasts, I
 {
     private readonly IWeatherForecastRepository _weatherForecastRepository;
 
-    public GetWeatherForecastsHandler(IWeatherForecastRepository weatherForecastRepository)
-    {
+    public GetWeatherForecastsHandler(IWeatherForecastRepository weatherForecastRepository) =>
         _weatherForecastRepository = weatherForecastRepository;
+
+    public async Task<IEnumerable<WeatherForecast>> Handle(GetWeatherForecasts request,
+        CancellationToken cancellationToken)
+    {
+        var forecasts = await _weatherForecastRepository.GetWeatherForecastsAsync()
+            .Where(forecast =>
+                forecast.CreatedAt.Date >= request.NotBefore.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local))
+            .ToListAsync(cancellationToken);
+
+        return forecasts;
     }
-    
-    public async Task<IEnumerable<WeatherForecast>> Handle(GetWeatherForecasts request, CancellationToken cancellationToken) => await _weatherForecastRepository.GetWeatherForecastsAsync().ToArrayAsync(cancellationToken: cancellationToken);
 }

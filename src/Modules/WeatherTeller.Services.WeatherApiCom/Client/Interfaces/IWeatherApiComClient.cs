@@ -1,22 +1,22 @@
 ﻿namespace WeatherTeller.Services.WeatherApiCom.Client.Interfaces;
 
 /// <summary>
-/// Interface for interacting with the WeatherApiCom service.
+///     Interface for interacting with the WeatherApiCom service.
 /// </summary>
 internal interface IWeatherApiComClient
 {
     /// <summary>
-    /// Gets the current weather data.
+    ///     Gets the current weather data.
     /// </summary>
     IWeatherApiComCurrent Current { get; }
 
     /// <summary>
-    /// Gets the weather forecast data.
+    ///     Gets the weather forecast data.
     /// </summary>
     IWeatherApiComForecast Forecast { get; }
 
     /// <summary>
-    /// Sets the location for the weather data.
+    ///     Sets the location for the weather data.
     /// </summary>
     /// <param name="latitude">The latitude of the location.</param>
     /// <param name="longitude">The longitude of the location.</param>
@@ -28,7 +28,7 @@ internal interface IWeatherApiComClient
     }
 
     /// <summary>
-    /// Refreshes the weather data.
+    ///     Refreshes the weather data.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation.</returns>
     public async Task Refresh()

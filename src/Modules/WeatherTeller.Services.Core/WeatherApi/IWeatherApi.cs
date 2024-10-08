@@ -7,8 +7,8 @@ public interface IWeatherApi
 {
     IObservable<WeatherForecastDay> Current { get; }
     IObservable<ImmutableList<WeatherForecastDay>> Days { get; }
-    
+
     Task SetLocation(double latitude, double longitude);
-    
+
     Task Refresh();
 }

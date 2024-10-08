@@ -5,7 +5,7 @@ using Avalonia.ReactiveUI;
 
 namespace WeatherTeller.Windows;
 
-sealed class Program
+internal sealed class Program
 {
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -15,7 +15,7 @@ sealed class Program
     {
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
-        
+
         App.Host.Stop();
     }
 

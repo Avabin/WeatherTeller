@@ -10,13 +10,11 @@ namespace WeatherTeller.ViewModels.Configuration;
 internal partial class ConfigureLocationViewModel : ConfigurationViewModel
 {
     private readonly IMediator _mediator;
+
+    public ConfigureLocationViewModel(IMediator mediator) => _mediator = mediator;
+
     [Reactive] public double Latitude { get; set; }
     [Reactive] public double Longitude { get; set; }
-    
-    public ConfigureLocationViewModel(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
 
     [ReactiveCommand]
     private async Task Load()
@@ -29,7 +27,7 @@ internal partial class ConfigureLocationViewModel : ConfigurationViewModel
             Longitude = location.Longitude;
         }
     }
-    
+
     [ReactiveCommand]
     private async Task Save()
     {

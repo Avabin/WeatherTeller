@@ -11,13 +11,12 @@ public static class Services
     {
         services.AddHostedService<CheckGeolocationHostedService>();
         services.AddHostedService<LoadSettingsStartupTask>();
-        services.AddHostedService<WeatherForecastPublisher>();
         services.AddHostedService<DaysForecastPublisher>();
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssemblyContaining<DaysForecastPublisher>();
         });
-        
+
         return services;
     }
 }

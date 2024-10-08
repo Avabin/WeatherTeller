@@ -6,5 +6,4 @@ namespace WeatherTeller.Services.Core.WeatherApi.Notifications;
 
 public record DaysForecastStateChangedNotification(ImmutableList<WeatherForecastDay> Forecast) : INotification
 {
-    
 }

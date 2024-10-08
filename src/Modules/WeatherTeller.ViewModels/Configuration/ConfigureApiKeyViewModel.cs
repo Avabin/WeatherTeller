@@ -10,27 +10,23 @@ namespace WeatherTeller.ViewModels.Configuration;
 internal partial class ConfigureApiKeyViewModel : ConfigurationViewModel
 {
     private readonly IMediator _mediator;
+
+    public ConfigureApiKeyViewModel(IMediator mediator) => _mediator = mediator;
+
     [Reactive] public string ApiKey { get; set; } = string.Empty;
-    public ConfigureApiKeyViewModel(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-    
+
     [ReactiveCommand]
     private async Task Load()
     {
         var settings = await _mediator.Send(new GetSettingsRequest());
         ApiKey = settings?.ApiKey ?? string.Empty;
     }
-    
+
     [ReactiveCommand]
     private async Task Save()
     {
         var apiKey = ApiKey;
-        if (string.IsNullOrWhiteSpace(apiKey))
-        {
-            return;
-        }
+        if (string.IsNullOrWhiteSpace(apiKey)) return;
         await _mediator.Send(new UpdateSettingsCommand(s => s with { ApiKey = apiKey }));
         IsFinished = true;
     }

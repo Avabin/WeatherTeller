@@ -14,18 +14,16 @@ namespace WeatherTeller.Android;
     ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
 public class MainActivity : AvaloniaMainActivity<App>
 {
-    protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
-    {
-        return base.CustomizeAppBuilder(builder)
+    protected override AppBuilder CustomizeAppBuilder(AppBuilder builder) =>
+        base.CustomizeAppBuilder(builder)
             .WithInterFont()
             .UseReactiveUI();
-    }
-    
+
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        
+
         App.Host.Stop();
     }
 }

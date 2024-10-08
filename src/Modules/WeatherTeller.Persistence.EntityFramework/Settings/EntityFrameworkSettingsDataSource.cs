@@ -3,10 +3,11 @@ using WeatherTeller.Persistence.Settings;
 
 namespace WeatherTeller.Persistence.EntityFramework.Settings;
 
-internal class EntityFrameworkSettingsDataSource : EntityFrameworkDataSourceBase<SettingsEntity, Persistence.Settings.Settings, string>, ISettingsDataSource
+internal class EntityFrameworkSettingsDataSource :
+    EntityFrameworkDataSourceBase<SettingsEntity, Persistence.Settings.Settings, string>, ISettingsDataSource
 {
-
-    public EntityFrameworkSettingsDataSource(IDbContextFactory<ApplicationDbContext> dbContextFactory) : base(dbContextFactory)
+    public EntityFrameworkSettingsDataSource(IDbContextFactory<ApplicationDbContext> dbContextFactory) : base(
+        dbContextFactory)
     {
     }
 

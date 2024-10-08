@@ -9,10 +9,7 @@ internal partial class ConfigureApiKeyView : ReactiveUserControl<ConfigureApiKey
     public ConfigureApiKeyView()
     {
         InitializeComponent();
-        
-        this.WhenActivated(disposables =>
-        {
-            
-        });
+
+        this.WhenActivated(disposables => { });
     }
 }

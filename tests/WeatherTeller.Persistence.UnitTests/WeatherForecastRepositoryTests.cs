@@ -13,10 +13,6 @@ namespace WeatherTeller.Persistence.UnitTests;
  Parallelizable(ParallelScope.All)]
 public class WeatherForecastRepositoryTests
 {
-    private IWeatherDataSource _weatherForecastDataSource;
-    private ILogger<WeatherForecastRepository> _logger;
-    private WeatherForecastRepository _weatherForecastRepository;
-
     [SetUp]
     public void SetUp()
     {
@@ -25,12 +21,17 @@ public class WeatherForecastRepositoryTests
         _weatherForecastRepository = new WeatherForecastRepository(_weatherForecastDataSource, _logger);
     }
 
+    private IWeatherDataSource _weatherForecastDataSource;
+    private ILogger<WeatherForecastRepository> _logger;
+    private WeatherForecastRepository _weatherForecastRepository;
+
     [Test]
     public async Task GetForecastAsync_ShouldReturnForecast_WhenForecastExists()
     {
         // Arrange
         var id = Id<ulong>.New(0);
-        var locationBuilder = new WeatherLocationBuilder().WithCity("test-city").WithCountry("test-country").WithLatitude(10).WithLongitude(20);
+        var locationBuilder = new WeatherLocationBuilder().WithCity("test-city").WithCountry("test-country")
+            .WithLatitude(10).WithLongitude(20);
         var expected = new WeatherForecastBuilder()
             .WithLocation(locationBuilder)
             .WithDays(day => day.WithDate(DateTime.UtcNow).WithState(state =>

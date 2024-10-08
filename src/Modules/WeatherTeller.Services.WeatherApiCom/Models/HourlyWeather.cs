@@ -63,4 +63,5 @@ internal readonly record struct HourlyWeather(
     [property: JsonPropertyName("gust_kph")]
     double GustKph,
     [property: JsonPropertyName("uv")] double UvIndex
-) : IHasPressureData, IHasWindData, IHasPrecipitationData, IHasVisibilityData, IHasCloudData, IHasFeelsLikeData, IHasWindChillData, IHasHeatIndexData, IHasDewPointData, IHasWillItRainData, IHasWillItSnowData, IHasUvData;
+) : IHasPressureData, IHasWindData, IHasPrecipitationData, IHasVisibilityData, IHasCloudData, IHasFeelsLikeData,
+    IHasWindChillData, IHasHeatIndexData, IHasDewPointData, IHasWillItRainData, IHasWillItSnowData, IHasUvData;

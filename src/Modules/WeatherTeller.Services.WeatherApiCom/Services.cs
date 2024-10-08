@@ -19,17 +19,13 @@ public static class Services
         options ??= new WeatherApiComClientOptions();
         services.AddSingleton<IWeatherApiComClient, WeatherApiComClient>();
         services.AddSingleton<IWeatherApiComCurrent, WeatherApiComCurrent>();
-        services.AddHttpClient<IWeatherApiComCurrent, WeatherApiComCurrent>(nameof(WeatherApiComCurrent), client =>
-        {
-            client.BaseAddress = new Uri(options.BaseUrl);
-        });
+        services.AddHttpClient<IWeatherApiComCurrent, WeatherApiComCurrent>(nameof(WeatherApiComCurrent),
+            client => { client.BaseAddress = new Uri(options.BaseUrl); });
         services.AddSingleton<IWeatherApiComForecast, WeatherApiComForecast>();
-        services.AddHttpClient<IWeatherApiComForecast, WeatherApiComForecast>(nameof(WeatherApiComForecast), client =>
-        {
-            client.BaseAddress = new Uri(options.BaseUrl);
-        });
+        services.AddHttpClient<IWeatherApiComForecast, WeatherApiComForecast>(nameof(WeatherApiComForecast),
+            client => { client.BaseAddress = new Uri(options.BaseUrl); });
         services.AddOptions<WeatherApiComClientOptions>().Bind(section);
-        
+
         services.AddSingleton<IWeatherApi, WeatherApiComWeatherApi>();
         return services;
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -7,22 +8,25 @@ using Microsoft.Extensions.Logging;
 using MsBox.Avalonia;
 using WeatherTeller.Infrastructure;
 using WeatherTeller.Persistence.EntityFramework;
+using WeatherTeller.Views.Main;
 using MainViewModel = WeatherTeller.ViewModels.Main.MainViewModel;
 
 namespace WeatherTeller;
 
-using MainView = Views.Main.MainView;
-using MainWindow = Views.Main.MainWindow;
+using MainView = MainView;
+using MainWindow = MainWindow;
 
-public partial class App : Application
+public class App : Application
 {
-    public static AvaloniaAppHost Host { get; } 
     static App()
     {
         AppHost.AddModule<AppModule>();
         Host = new AvaloniaAppHost();
         Host.Build();
     }
+
+    public static AvaloniaAppHost Host { get; }
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -33,14 +37,16 @@ public partial class App : Application
         try
         {
             Host.Build();
+            var logger = Host.Services.GetRequiredService<ILogger<App>>();
             Host.Services.EnsureDbCreated();
             Host.Start();
             // on environment exit
             var vm = Host.Services.GetRequiredService<MainViewModel>();
-            vm.CheckSettingsCommand.Execute().Subscribe(unit =>
-                Host.Services.GetRequiredService<ILogger<App>>().LogInformation("Settings checked"));
-            vm.LoadWeatherForecastsCommand.Execute().Subscribe(unit =>
-                Host.Services.GetRequiredService<ILogger<App>>().LogInformation("Weather forecasts loaded"));
+            vm.CheckSettingsCommand.Execute()
+                .SelectMany(_ => vm.LoadWeatherForecastsCommand.Execute()
+                    .Do(_ => logger.LogInformation("Weather forecasts loaded")))
+                .Do(_ => logger.LogInformation("Settings checked"))
+                .Subscribe();
             switch (ApplicationLifetime)
             {
                 case IClassicDesktopStyleApplicationLifetime desktop:

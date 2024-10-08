@@ -10,9 +10,8 @@ namespace WeatherTeller.Persistence.LiteDb;
 internal class LiteDbDataSource<T, TId>(ILiteDatabase liteDatabase, ILogger<LiteDbDataSource<T, TId>> logger)
     : IDataSource<T, TId> where T : IIdentifiable<TId>, IComparable<T> where TId : IComparable<TId>
 {
-    private IScheduler _scheduler = ThreadPoolScheduler.Instance;
-    
     private readonly ILogger<LiteDbDataSource<T, TId>> _logger = logger;
+    private readonly IScheduler _scheduler = ThreadPoolScheduler.Instance;
     private ILiteCollection<T> Collection => liteDatabase.GetCollection<T>();
 
     public IAsyncEnumerable<T> Where(Func<T, bool>? predicate = null)
@@ -51,24 +50,12 @@ internal class LiteDbDataSource<T, TId>(ILiteDatabase liteDatabase, ILogger<Lite
         return item.Id.Value;
     }, _scheduler);
 
-    private IEnumerable<T?> WhereSync(Func<T, bool>? predicate = null)
-    {
-        _logger.LogTrace("Querying collection");
-        var query = Collection.Query();
-        if (predicate != null)
-        {
-            query = query.Where(x => predicate(x));
-        }
-
-        return query.ToEnumerable();
-    }
-
     public IObservable<TId[]> AddRange(IEnumerable<T> items) =>
         Observable.Start(() =>
         {
             var identifiables = items.ToArray();
             var itemCount = identifiables.Length;
-            _logger.LogTrace("Adding items {ItemsCount}", itemCount); 
+            _logger.LogTrace("Adding items {ItemsCount}", itemCount);
             Collection.InsertBulk(identifiables);
             return identifiables.Select(x => x.Id.Value).ToArray();
         }, _scheduler);
@@ -87,6 +74,44 @@ internal class LiteDbDataSource<T, TId>(ILiteDatabase liteDatabase, ILogger<Lite
             return Unit.Default;
         }, _scheduler);
 
+    public IObservable<Unit> UpdateMany(IEnumerable<Id<TId>> ids, Func<T, T> update) =>
+        Observable.Start(() =>
+        {
+            UpdateManySync(ids, update);
+            return Unit.Default;
+        }, _scheduler);
+
+    public IObservable<Unit> RemoveOne(Id<TId> id) => Observable.Start(() =>
+    {
+        RemoveOneSync(id);
+        return Unit.Default;
+    }, _scheduler);
+
+    public IObservable<Unit> RemoveMany(Func<T, bool> predicate) => Observable.Start(() =>
+    {
+        RemoveManySync(predicate);
+        return Unit.Default;
+    }, _scheduler);
+
+    public IObservable<Unit> RemoveAll() => Observable.Start(() =>
+    {
+        RemoveAllSync();
+        return Unit.Default;
+    }, _scheduler);
+
+    public IObservable<bool> Contains(Id<TId> id) => Observable.Start(() => ContainsSync(id), _scheduler);
+
+    public IObservable<T?> GetById(Id<TId> id) => Observable.Start(() => GetByIdSync(id), _scheduler);
+
+    private IEnumerable<T?> WhereSync(Func<T, bool>? predicate = null)
+    {
+        _logger.LogTrace("Querying collection");
+        var query = Collection.Query();
+        if (predicate != null) query = query.Where(x => predicate(x));
+
+        return query.ToEnumerable();
+    }
+
     private void ReplaceOneSync(Id<TId> id, T item)
     {
         // update
@@ -97,21 +122,11 @@ internal class LiteDbDataSource<T, TId>(ILiteDatabase liteDatabase, ILogger<Lite
     {
         _logger.LogTrace("Updating item with id {id}", id);
         var entity = GetByIdSync(id);
-        if (entity == null)
-        {
-            return;
-        }
+        if (entity == null) return;
 
         var updatedEntity = update(entity);
         Collection.Update(updatedEntity);
     }
-
-    public IObservable<Unit> UpdateMany(IEnumerable<Id<TId>> ids, Func<T, T> update) =>
-        Observable.Start(() =>
-        {
-            UpdateManySync(ids, update);
-            return Unit.Default;
-        }, _scheduler);
 
     private void UpdateManySync(IEnumerable<Id<TId>> ids, Func<T, T> update)
     {
@@ -123,11 +138,11 @@ internal class LiteDbDataSource<T, TId>(ILiteDatabase liteDatabase, ILogger<Lite
         }
     }
 
-    public IObservable<Unit> RemoveOne(Id<TId> id) => Observable.Start(() =>
+    private void RemoveManySync(Func<T, bool> predicate)
     {
-        RemoveOneSync(id);
-        return Unit.Default;
-    }, _scheduler);
+        _logger.LogTrace("Removing items with predicate");
+        Collection.DeleteMany(x => predicate(x));
+    }
 
     private void RemoveOneSync(Id<TId> id)
     {
@@ -136,34 +151,27 @@ internal class LiteDbDataSource<T, TId>(ILiteDatabase liteDatabase, ILogger<Lite
         Collection.Delete(expression);
     }
 
-    public IObservable<Unit> RemoveAll() => Observable.Start(() =>
-    {
-        RemoveAllSync();
-        return Unit.Default;
-    }, _scheduler);
     private void RemoveAllSync()
     {
         _logger.LogTrace("Removing all items");
         Collection.DeleteAll();
     }
 
-    public IObservable<bool> Contains(Id<TId> id) => Observable.Start(() => ContainsSync(id), _scheduler);
-
     private bool ContainsSync(Id<TId> id)
     {
         BsonExpression expression = $"Id = {id.Value}";
         BsonExpression alternativeExpression = $"_id = {id.Value}";
-        _logger.LogTrace("Checking if item with id {Expression} | {AlternativeExpression} exists", expression, alternativeExpression);
+        _logger.LogTrace("Checking if item with id {Expression} | {AlternativeExpression} exists", expression,
+            alternativeExpression);
         return Collection.Exists(expression) || Collection.Exists(alternativeExpression);
     }
-
-    public IObservable<T?> GetById(Id<TId> id) => Observable.Start(() => GetByIdSync(id), _scheduler);
 
     private T? GetByIdSync(Id<TId> id)
     {
         BsonExpression expression = $"Id = {id.Value}";
         BsonExpression alternativeExpression = $"_id = {id.Value}";
-        _logger.LogTrace("Getting item with id {Expression} | {AlternativeExpression}", expression, alternativeExpression);
+        _logger.LogTrace("Getting item with id {Expression} | {AlternativeExpression}", expression,
+            alternativeExpression);
         return Collection.FindOne(expression) ?? Collection.FindOne(alternativeExpression);
     }
 }

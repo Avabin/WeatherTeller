@@ -13,17 +13,20 @@ internal class WeatherApiComCurrent : IWeatherApiComCurrent
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<WeatherApiComCurrent> _logger;
-    private WeatherApiComClientOptions _clientOptions;
+    private readonly WeatherApiComClientOptions _clientOptions;
+
+    private readonly ISubject<WeatherState> _currentWeather = new ReplaySubject<WeatherState>(1);
+
+    private double _latitude;
+    private readonly ISubject<WeatherLocation> _location = new ReplaySubject<WeatherLocation>(1);
+    private double _longitude;
 
     // retry with exponential backoff when transient errors occur
     // retry on 429 (too many requests) and 5xx (server errors)
-    private IAsyncPolicy<HttpResponseMessage> _retryPolicy = Policy
+    private readonly IAsyncPolicy<HttpResponseMessage> _retryPolicy = Policy
         .HandleResult<HttpResponseMessage>(r =>
             r.StatusCode == HttpStatusCode.TooManyRequests || (int)r.StatusCode >= 500)
         .WaitAndRetryForeverAsync(i => TimeSpan.FromSeconds(Math.Max(Math.Pow(2, i), 360)));
-
-    private double _latitude = 0;
-    private double _longitude = 0;
 
     public WeatherApiComCurrent(HttpClient httpClient,
         IOptions<WeatherApiComClientOptions> options,
@@ -34,9 +37,7 @@ internal class WeatherApiComCurrent : IWeatherApiComCurrent
         _clientOptions = options.Value;
     }
 
-    private ISubject<WeatherState> _currentWeather = new ReplaySubject<WeatherState>(1);
     public IObservable<WeatherState> CurrentWeather => _currentWeather;
-    private ISubject<WeatherLocation> _location = new ReplaySubject<WeatherLocation>(1);
     public IObservable<WeatherLocation> Location => _location;
 
     public Task SetLocation(double latitude, double longitude)
@@ -61,6 +62,7 @@ internal class WeatherApiComCurrent : IWeatherApiComCurrent
             _logger.LogWarning("API key must be set before refreshing weather data");
             return;
         }
+
         if (_latitude == 0 || _longitude == 0)
         {
             _logger.LogWarning("Latitude and longitude must be set before refreshing weather data");
@@ -87,5 +89,6 @@ internal class WeatherApiComCurrent : IWeatherApiComCurrent
     }
 
     private async Task<HttpResponseMessage> GetCurrentWeatherResponse(double latitude, double longitude) =>
-        await _httpClient.GetAsync($"{_clientOptions.CurrentWeatherEndpoint}?key={_clientOptions.ApiKey}&q={latitude},{longitude}");
+        await _httpClient.GetAsync(
+            $"{_clientOptions.CurrentWeatherEndpoint}?key={_clientOptions.ApiKey}&q={latitude},{longitude}");
 }

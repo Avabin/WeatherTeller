@@ -10,22 +10,25 @@ namespace WeatherTeller.ViewModels.WeatherForecast;
 
 internal class WeatherForecastService : IWeatherForecastService
 {
+    private readonly IMediator _mediator;
     private readonly IWeatherForecastDayViewModelFactory _weatherForecastDayViewModelFactory;
     private readonly IWeatherStateViewModelFactory _weatherStateViewModelFactory;
-    private readonly IMediator _mediator;
-    public SourceCache<WeatherForecastDayViewModel, DateOnly> WeatherForecast { get; } = new(x => x.Date);
-    
-    private ISubject<WeatherStateViewModel> _currentWeatherState = new ReplaySubject<WeatherStateViewModel>(1);
-    public IObservable<WeatherStateViewModel> CurrentWeatherState => _currentWeatherState.AsObservable();
 
-    public WeatherForecastService(IWeatherForecastDayViewModelFactory weatherForecastDayViewModelFactory, IWeatherStateViewModelFactory weatherStateViewModelFactory, IMediator mediator)
+    private readonly ISubject<WeatherStateViewModel> _currentWeatherState = new ReplaySubject<WeatherStateViewModel>(1);
+
+    public WeatherForecastService(IWeatherForecastDayViewModelFactory weatherForecastDayViewModelFactory,
+        IWeatherStateViewModelFactory weatherStateViewModelFactory, IMediator mediator)
     {
         _weatherForecastDayViewModelFactory = weatherForecastDayViewModelFactory;
         _weatherStateViewModelFactory = weatherStateViewModelFactory;
         _mediator = mediator;
     }
 
+    public SourceCache<WeatherForecastDayViewModel, DateOnly> WeatherForecast { get; } = new(x => x.Date);
+    public IObservable<WeatherStateViewModel> CurrentWeatherState => _currentWeatherState.AsObservable();
+
     public IObservable<IChangeSet<WeatherForecastDayViewModel, DateOnly>> Connect() => WeatherForecast.Connect();
+
     public void Add(WeatherForecastDay forecastDay)
     {
         var vm = _weatherForecastDayViewModelFactory.Create(forecastDay);
@@ -38,14 +41,14 @@ internal class WeatherForecastService : IWeatherForecastService
         WeatherForecast.AddOrUpdate(vms);
     }
 
+    public async Task Refresh()
+    {
+        await _mediator.Send(new RefreshWeatherForecastCommand());
+    }
+
     public void SetCurrentWeatherState(WeatherState state)
     {
         var vm = _weatherStateViewModelFactory.Create(state);
         _currentWeatherState.OnNext(vm);
-    }
-
-    public async Task Refresh()
-    {
-        await _mediator.Send(new RefreshWeatherForecastCommand());
     }
 }

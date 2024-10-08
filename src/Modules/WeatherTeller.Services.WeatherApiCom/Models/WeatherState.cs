@@ -8,12 +8,9 @@ internal readonly record struct WeatherState(
     long LastUpdatedEpoch,
     [property: JsonPropertyName("last_updated")]
     string LastUpdated,
-    [property: JsonPropertyName("temp_c")]
-    double TempC,
-    [property: JsonPropertyName("temp_f")]
-    double TempF,
-    [property: JsonPropertyName("is_day")]
-    int IsDay,
+    [property: JsonPropertyName("temp_c")] double TempC,
+    [property: JsonPropertyName("temp_f")] double TempF,
+    [property: JsonPropertyName("is_day")] int IsDay,
     [property: JsonPropertyName("condition")]
     WeatherCondition Condition,
     [property: JsonPropertyName("wind_mph")]
@@ -34,8 +31,7 @@ internal readonly record struct WeatherState(
     double PrecipitationIn,
     [property: JsonPropertyName("humidity")]
     int Humidity,
-    [property: JsonPropertyName("cloud")]
-    int CloudCover,
+    [property: JsonPropertyName("cloud")] int CloudCover,
     [property: JsonPropertyName("feelslike_c")]
     double FeelsLikeCelsius,
     [property: JsonPropertyName("feelslike_f")]
@@ -52,12 +48,10 @@ internal readonly record struct WeatherState(
     double DewPointCelsius,
     [property: JsonPropertyName("dewpoint_f")]
     double DewPointFahrenheit,
-    [property: JsonPropertyName("vis_km")]
-    double VisibilityKm,
+    [property: JsonPropertyName("vis_km")] double VisibilityKm,
     [property: JsonPropertyName("vis_miles")]
     double VisibilityMiles,
-    [property: JsonPropertyName("uv")]
-    double UvIndex,
+    [property: JsonPropertyName("uv")] double UvIndex,
     [property: JsonPropertyName("gust_mph")]
     double GustMph,
     [property: JsonPropertyName("gust_kph")]

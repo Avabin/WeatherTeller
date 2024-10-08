@@ -7,11 +7,9 @@ namespace WeatherTeller.ViewModels.WeatherForecast;
 internal interface IWeatherForecastService
 {
     IObservable<IChangeSet<WeatherForecastDayViewModel, DateOnly>> Connect();
-    IObservable<WeatherStateViewModel> CurrentWeatherState { get; }
-    
+
     void Add(WeatherForecastDay forecastDay);
     void AddRange(IEnumerable<WeatherForecastDay> forecastDays);
-    
-    void SetCurrentWeatherState(WeatherState state);
+
     Task Refresh();
 }

@@ -5,12 +5,16 @@
              xmlns:configuration="clr-namespace:WeatherTeller.ViewModels.Configuration;assembly=WeatherTeller.ViewModels"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="600"
              x:Class="WeatherTeller.Views.Configuration.ConfigureLocationView"
-                x:DataType="configuration:ConfigureLocationViewModel">
+             x:DataType="configuration:ConfigureLocationViewModel">
     <Grid RowDefinitions=" Auto, Auto, Auto, *, Auto">
-        <TextBlock Text="Enter your location" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Margin="10"/>
-        <TextBox Grid.Row="1" Watermark="Longitude" UseFloatingWatermark="True" Text="{Binding Longitude, Mode=TwoWay}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-        <TextBox Grid.Row="2" Watermark="Latitude" UseFloatingWatermark="True" Text="{Binding Latitude, Mode=TwoWay}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-        <Button Grid.Row="4" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" Margin="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+        <TextBlock Text="Enter your location" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                   TextAlignment="Center" Margin="10" />
+        <TextBox Grid.Row="1" Watermark="Longitude" UseFloatingWatermark="True" Text="{Binding Longitude, Mode=TwoWay}"
+                 Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+        <TextBox Grid.Row="2" Watermark="Latitude" UseFloatingWatermark="True" Text="{Binding Latitude, Mode=TwoWay}"
+                 Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+        <Button Grid.Row="4" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" Margin="10"
+                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
     </Grid>
-        
+
 </UserControl>

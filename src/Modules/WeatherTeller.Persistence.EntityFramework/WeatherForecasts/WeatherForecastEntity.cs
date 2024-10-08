@@ -5,9 +5,9 @@ namespace WeatherTeller.Persistence.EntityFramework.WeatherForecasts;
 
 internal record WeatherForecastEntity : IHasId<ulong>
 {
-    public ulong Id { get; set; } = 0;
     public WeatherLocationEntity? Location { get; set; }
     public List<WeatherForecastDayEntity> Days { get; set; } = new();
+    public ulong Id { get; set; } = 0;
 }
 
 internal record WeatherLocationEntity
@@ -22,7 +22,7 @@ internal record WeatherForecastDayEntity
 {
     public long Id { get; set; }
     public DateOnly Date { get; set; }
-    public WeatherStateEntity? State { get; set; } 
+    public WeatherStateEntity? State { get; set; }
 }
 
 internal record WeatherStateEntity

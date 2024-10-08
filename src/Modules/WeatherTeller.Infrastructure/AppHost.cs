@@ -27,11 +27,7 @@ public class AppHost
     public static string AppName = "WeatherTeller";
     public static string AvaloniaResourceUriBase = $"avares://{AppName}/";
     public static string AvaloniaResourceUriAssetsBase = $"avares://{AppName}/Assets/";
-    public static Uri GetResourceUri(string path) => new Uri($"{AvaloniaResourceUriBase}{path}");
-    public static Uri GetAssetUri(string path) => new Uri($"{AvaloniaResourceUriAssetsBase}{path}");
-    private static List<Module> _modules = new();
-    public static void AddModule(Module module) => _modules.Add(module);
-    public static void AddModule<TModule>() where TModule : Module, new() => _modules.Add(new TModule());
+    private static readonly List<Module> _modules = new();
     private readonly Lazy<IHostBuilder> _builder;
     private readonly Lazy<IHost> _host;
 
@@ -54,8 +50,8 @@ public class AppHost
         CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-        
-        
+
+
         _host = new Lazy<IHost>(() => Builder.Build(), LazyThreadSafetyMode.ExecutionAndPublication);
         _builder = new Lazy<IHostBuilder>(CreateHostBuilder, LazyThreadSafetyMode.ExecutionAndPublication);
     }
@@ -66,6 +62,10 @@ public class AppHost
     private IHostBuilder Builder => _builder.Value;
     public IServiceProvider Services { get; private set; } = null!;
     public IConfiguration Configuration => Services.GetRequiredService<IConfiguration>();
+    public static Uri GetResourceUri(string path) => new($"{AvaloniaResourceUriBase}{path}");
+    public static Uri GetAssetUri(string path) => new($"{AvaloniaResourceUriAssetsBase}{path}");
+    public static void AddModule(Module module) => _modules.Add(module);
+    public static void AddModule<TModule>() where TModule : Module, new() => _modules.Add(new TModule());
 
     private IHostBuilder CreateHostBuilder()
     {
@@ -121,10 +121,8 @@ public class AppHost
                 }
             }
 
-            builder.AddJsonFile(isDevelopment ?
-                    appSettingsDevWritePath : 
-                    appSettingWritePath, 
-                optional: true, reloadOnChange: true);
+            builder.AddJsonFile(isDevelopment ? appSettingsDevWritePath : appSettingWritePath,
+                true, true);
         }
         else
         {
@@ -149,16 +147,15 @@ public class AppHost
             .Enrich.WithProperty("MachineName", Environment.MachineName)
             .WriteTo.Console(LogEventLevel.Debug,
                 "{Timestamp:HH:mm:ss} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}")
-            .WriteTo.File(new RenderedCompactJsonFormatter(), System.IO.Path.Combine(Path, "logs", "log-.log"), rollingInterval: RollingInterval.Day,
+            .WriteTo.File(new RenderedCompactJsonFormatter(), System.IO.Path.Combine(Path, "logs", "log-.log"),
+                rollingInterval: RollingInterval.Day,
                 restrictedToMinimumLevel: LogEventLevel.Verbose);
-        
+
         if (maybeSeqUrl != null)
-        {
             loggerConfiguration
                 .MinimumLevel.Verbose()
-                .WriteTo.Seq(maybeSeqUrl, LogEventLevel.Verbose);
-        }
-        
+                .WriteTo.Seq(maybeSeqUrl);
+
         builder.AddSerilog(loggerConfiguration
             .CreateLogger());
     }
@@ -170,15 +167,11 @@ public class AppHost
         services.AddPersistence();
         var isDesign = Design.IsDesignMode;
         if (isDesign)
-        {
             services.AddWeatherTellerInMem();
-        }
         else
-        {
             services.AddWeatherTellerSqlite(Design.IsDesignMode
                 ? System.IO.Path.Combine(Path, "teller-design.sqlite")
                 : System.IO.Path.Combine(Path, "teller.sqlite"));
-        }
     }
 
     private void ConfigureContainer(ContainerBuilder builder)
@@ -190,12 +183,9 @@ public class AppHost
 
         var appViewLocator = new AppViewLocator();
         Locator.CurrentMutable.RegisterConstant<IViewLocator>(appViewLocator);
-        
+
         // register all modules
-        foreach (var module in _modules)
-        {
-            builder.RegisterModule(module);
-        }
+        foreach (var module in _modules) builder.RegisterModule(module);
     }
 
     public void Build()

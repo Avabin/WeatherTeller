@@ -6,10 +6,8 @@ internal class WeatherForecastDayViewModelFactory : IWeatherForecastDayViewModel
 {
     private readonly IWeatherStateViewModelFactory _weatherStateViewModelFactory;
 
-    public WeatherForecastDayViewModelFactory(IWeatherStateViewModelFactory weatherStateViewModelFactory)
-    {
+    public WeatherForecastDayViewModelFactory(IWeatherStateViewModelFactory weatherStateViewModelFactory) =>
         _weatherStateViewModelFactory = weatherStateViewModelFactory;
-    }
 
     public WeatherForecastDayViewModel Create(WeatherForecastDay day) => new(day, _weatherStateViewModelFactory);
 }

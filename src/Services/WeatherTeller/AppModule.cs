@@ -25,12 +25,17 @@ public class AppModule : Module
         builder.RegisterType<MainView>().AsSelf().AsImplementedInterfaces().As<IViewFor<MainViewModel>>();
         builder.RegisterType<MainWindow>().AsSelf().AsImplementedInterfaces().As<IViewFor<MainViewModel>>();
         builder.RegisterType<SettingsView>().AsSelf().AsImplementedInterfaces().As<IViewFor<SettingsViewModel>>();
-        
-        builder.RegisterType<WeatherForecastsView>().AsSelf().AsImplementedInterfaces().As<IViewFor<WeatherForecastsViewModel>>();
-        builder.RegisterType<WeatherForecastDayView>().AsSelf().AsImplementedInterfaces().As<IViewFor<WeatherForecastDayViewModel>>();
-        
-        builder.RegisterType<ConfigurationWizardView>().AsSelf().AsImplementedInterfaces().As<IViewFor<ConfigurationWizardViewModel>>();
-        builder.RegisterType<ConfigureLocationView>().AsSelf().AsImplementedInterfaces().As<IViewFor<ConfigureLocationViewModel>>();
-        builder.RegisterType<ConfigureApiKeyView>().AsSelf().AsImplementedInterfaces().As<IViewFor<ConfigureApiKeyViewModel>>();
+
+        builder.RegisterType<WeatherForecastsView>().AsSelf().AsImplementedInterfaces()
+            .As<IViewFor<WeatherForecastsViewModel>>();
+        builder.RegisterType<WeatherForecastDayView>().AsSelf().AsImplementedInterfaces()
+            .As<IViewFor<WeatherForecastDayViewModel>>();
+
+        builder.RegisterType<ConfigurationWizardView>().AsSelf().AsImplementedInterfaces()
+            .As<IViewFor<ConfigurationWizardViewModel>>();
+        builder.RegisterType<ConfigureLocationView>().AsSelf().AsImplementedInterfaces()
+            .As<IViewFor<ConfigureLocationViewModel>>();
+        builder.RegisterType<ConfigureApiKeyView>().AsSelf().AsImplementedInterfaces()
+            .As<IViewFor<ConfigureApiKeyViewModel>>();
     }
 }

@@ -9,9 +9,9 @@ public record WeatherState(
     double Pressure
 )
 {
-    public static WeatherState Empty => new();
     public WeatherState() : this(WeatherLocation.Empty, "", 0, 0, 0, 0)
     {
-        
     }
+
+    public static WeatherState Empty => new();
 }

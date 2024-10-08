@@ -13,12 +13,12 @@ public partial class WeatherStateBuilder
             build(locationBuilder);
             return locationBuilder.Build();
         });
-    
+
     // WithLocation that accepts a WeatherLocationBuilder to build the WeatherLocation
     public WeatherStateBuilder WithLocation(WeatherLocationBuilder locationBuilder)
     {
         var location = locationBuilder.Build();
-     
-        return this.WithLocation(location);
+
+        return WithLocation(location);
     }
 }

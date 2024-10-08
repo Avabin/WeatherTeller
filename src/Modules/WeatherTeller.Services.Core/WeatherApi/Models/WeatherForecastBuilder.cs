@@ -13,12 +13,14 @@ public partial class WeatherForecastBuilder
             build(dayBuilder);
             return [dayBuilder.Build()];
         });
-    
+
     // WithDays that accepts a WeatherForecastDayBuilder to build the WeatherForecastDay
-    public WeatherForecastBuilder WithDays(WeatherForecastDayBuilder dayBuilder) => WithDays(() => [dayBuilder.Build()]);
-    
+    public WeatherForecastBuilder WithDays(WeatherForecastDayBuilder dayBuilder) =>
+        WithDays(() => [dayBuilder.Build()]);
+
     // WithDays that accepts a IEnumerable<WeatherForecastDay> to build the WeatherForecastDay
     public WeatherForecastBuilder WithDays(IEnumerable<WeatherForecastDay> days) => WithDays(days.ToList);
+
     // WithLocation that accepts a Action<WeatherLocationBuilder> to build the WeatherLocation
     public WeatherForecastBuilder WithLocation(Action<WeatherLocationBuilder> build) =>
         WithLocation(() =>
@@ -27,8 +29,8 @@ public partial class WeatherForecastBuilder
             build(locationBuilder);
             return locationBuilder.Build();
         });
-    
+
     // WithLocation that accepts a WeatherLocationBuilder to build the WeatherLocation
-    public WeatherForecastBuilder WithLocation(WeatherLocationBuilder locationBuilder) => WithLocation(locationBuilder.Build);
-    
+    public WeatherForecastBuilder WithLocation(WeatherLocationBuilder locationBuilder) =>
+        WithLocation(locationBuilder.Build);
 }

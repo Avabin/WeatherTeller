@@ -9,7 +9,7 @@ internal partial class MainWindow : ReactiveWindow<MainViewModel>
     public MainWindow()
     {
         InitializeComponent();
-        
+
         this.WhenActivated(d => { });
     }
 }

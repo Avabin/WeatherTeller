@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WeatherTeller.Services.Core\WeatherTeller.Services.Core.csproj" />
+        <ProjectReference Include="..\WeatherTeller.Services.Core\WeatherTeller.Services.Core.csproj"/>
     </ItemGroup>
 
 </Project>

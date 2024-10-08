@@ -9,11 +9,10 @@ public record WeatherLocation(
     double Longitude
 )
 {
-    public static WeatherLocation Empty => new();
-
     [MapperConstructor]
     public WeatherLocation() : this("", "", 0, 0)
     {
-        
     }
+
+    public static WeatherLocation Empty => new();
 }

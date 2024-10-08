@@ -7,14 +7,13 @@ namespace WeatherTeller.Services.Settings;
 
 internal class LoadSettingsStartupTask : BackgroundService
 {
-    private readonly ISettingsRepository _repository;
     private readonly IMediator _mediator;
+    private readonly ISettingsRepository _repository;
 
     public LoadSettingsStartupTask(ISettingsRepository repository, IMediator mediator)
     {
         _repository = repository;
         _mediator = mediator;
-        
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

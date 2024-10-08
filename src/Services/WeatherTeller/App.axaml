@@ -1,6 +1,5 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:WeatherTeller"
              xmlns:infrastructure="clr-namespace:WeatherTeller.Infrastructure;assembly=WeatherTeller.Infrastructure"
              xmlns:controls="clr-namespace:Avalonia.Labs.Controls;assembly=Avalonia.Labs.Controls"
              x:Class="WeatherTeller.App"
@@ -10,12 +9,13 @@
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Dark">
-                    <RadialGradientBrush x:Key="GradientBackgroundBrush" Center="15%,15%" GradientOrigin="5%,5%" RadiusX="75%" RadiusY="75%">
+                    <RadialGradientBrush x:Key="GradientBackgroundBrush" Center="15%,15%" GradientOrigin="5%,5%"
+                                         RadiusX="75%" RadiusY="75%">
                         <GradientStop Offset="0" Color="#FF691B99" />
                         <GradientStop Offset="0.5" Color="#FF270A39" />
                         <GradientStop Offset="1" Color="#FF000000" />
                     </RadialGradientBrush>
-                    
+
                     <!-- for a dark theme, use dark violets with a shade of gray -->
                     <SolidColorBrush x:Key="MainBackgroundBrush" Color="#270A39" />
 
@@ -32,7 +32,7 @@
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Light">
                     <RadialGradientBrush x:Key="GradientBackgroundBrush" GradientOrigin="0.0,0.0" Center="0.5,0.5"
-                                         
+
                                          RadiusX="0.8" RadiusY="0.8">
                         <RadialGradientBrush.GradientStops>
                             <GradientStop Offset="0.0" Color="#FFB970C6" />
@@ -84,7 +84,7 @@
                                        ListLow="#ff251c7f" ListMedium="#ff4f38ad" RegionColor="#ff08182b" />
             </FluentTheme.Palettes>
         </FluentTheme>
-        <controls:ControlThemes/>
+        <controls:ControlThemes />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="Styles/AppStyles.axaml" />
     </Application.Styles>

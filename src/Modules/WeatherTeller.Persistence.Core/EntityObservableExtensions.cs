@@ -35,7 +35,7 @@ public static class EntityObservableExtensions
         WhereChanged<TNotification, T, TId>(this IObservable<TNotification> source)
         where TNotification : EntityChangedNotification<T, TId> =>
         source.Where(x => !x.Before?.Equals(x.After) ?? false);
-    
+
     // where not null
     public static IObservable<T> WhereNotNull<T>(this IObservable<T?> source) =>
         source.Where(x => x is not null).Select(x => x!);

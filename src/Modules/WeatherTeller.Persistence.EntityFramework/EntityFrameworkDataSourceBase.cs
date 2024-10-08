@@ -5,27 +5,24 @@ using WeatherTeller.Persistence.Models;
 
 namespace WeatherTeller.Persistence.EntityFramework;
 
-internal abstract class EntityFrameworkDataSourceBase<TEntity, T, TId> : IDataSource<T, TId> where TId : IComparable<TId> where T : IIdentifiable<TId> where TEntity : class, IHasId<TId>
+internal abstract class EntityFrameworkDataSourceBase<TEntity, T, TId> : IDataSource<T, TId>
+    where TId : IComparable<TId> where T : IIdentifiable<TId> where TEntity : class, IHasId<TId>
 {
     private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
-    private ApplicationDbContext DbContext() => _dbContextFactory.CreateDbContext();
-    
-    protected abstract T ToPersistence(TEntity entity);
-    protected abstract TEntity ToEntity(T model);
 
-    public EntityFrameworkDataSourceBase(IDbContextFactory<ApplicationDbContext> dbContextFactory)
-    {
+    public EntityFrameworkDataSourceBase(IDbContextFactory<ApplicationDbContext> dbContextFactory) =>
         _dbContextFactory = dbContextFactory;
-    }
 
     public IAsyncEnumerable<T> Where(Func<T, bool>? predicate = null)
     {
         // get async stream of settings
         var asyncEnumerable = DbContext().Set<TEntity>().AsAsyncEnumerable().Select(ToPersistence);
-        
-        return predicate is null ?
+
+        return predicate is null
+            ?
             // apply predicate if provided
-            asyncEnumerable :
+            asyncEnumerable
+            :
             // apply predicate if provided
             asyncEnumerable.Where(predicate);
     }
@@ -59,10 +56,7 @@ internal abstract class EntityFrameworkDataSourceBase<TEntity, T, TId> : IDataSo
             var set = dbContext.Set<TEntity>();
             var idValue = id.Value;
             var item = await set.FirstOrDefaultAsync(x => x.Id.Equals(idValue), token);
-            if (item is null)
-            {
-                return;
-            }
+            if (item is null) return;
 
             var persistence = ToPersistence(item);
             var updatedItem = update(persistence);
@@ -120,6 +114,16 @@ internal abstract class EntityFrameworkDataSourceBase<TEntity, T, TId> : IDataSo
             }
         });
 
+    public IObservable<Unit> RemoveMany(Func<T, bool> predicate) => Observable.FromAsync(async token =>
+    {
+        var dbContext = DbContext();
+        var set = dbContext.Set<TEntity>();
+        var items = await set.ToListAsync(token);
+        var itemsToRemove = items.Where(x => predicate(ToPersistence(x))).ToList();
+        set.RemoveRange(itemsToRemove);
+        await dbContext.SaveChangesAsync(token);
+    });
+
     public IObservable<Unit> RemoveAll() =>
         Observable.FromAsync(async token =>
         {
@@ -147,4 +151,9 @@ internal abstract class EntityFrameworkDataSourceBase<TEntity, T, TId> : IDataSo
             var item = await set.FirstOrDefaultAsync(x => x.Id.Equals(idValue), token);
             return item is null ? default : ToPersistence(item);
         });
+
+    private ApplicationDbContext DbContext() => _dbContextFactory.CreateDbContext();
+
+    protected abstract T ToPersistence(TEntity entity);
+    protected abstract TEntity ToEntity(T model);
 }

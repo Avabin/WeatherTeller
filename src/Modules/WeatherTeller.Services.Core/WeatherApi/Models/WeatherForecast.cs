@@ -4,13 +4,14 @@ namespace WeatherTeller.Services.Core.WeatherApi.Models;
 
 public record WeatherForecast(
     WeatherLocation Location,
-    List<WeatherForecastDay> Days
+    List<WeatherForecastDay> Days,
+    DateTimeOffset CreatedAt
 )
 {
-    public static WeatherForecast Empty => new();
     [MapperConstructor]
-    public WeatherForecast() : this(WeatherLocation.Empty, [])
+    public WeatherForecast() : this(WeatherLocation.Empty, [], DateTimeOffset.Now)
     {
-        
     }
+
+    public static WeatherForecast Empty => new();
 }

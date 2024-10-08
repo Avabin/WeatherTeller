@@ -9,7 +9,7 @@ internal class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
-    
+
     public DbSet<SettingsEntity> Settings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -17,8 +17,8 @@ internal class ApplicationDbContext : DbContext
         modelBuilder.Entity<SettingsEntity>().HasKey(x => x.Id);
         modelBuilder.Entity<SettingsEntity>().OwnsOne(x => x.Location);
         modelBuilder.Entity<SettingsEntity>().Property(x => x.ApiKey).IsRequired(false);
-        
-        
+
+
         modelBuilder.Entity<WeatherForecastEntity>().HasKey(x => x.Id);
         modelBuilder.Entity<WeatherForecastEntity>().OwnsMany(x => x.Days, x =>
         {
@@ -35,7 +35,7 @@ internal class ApplicationDbContext : DbContext
             x.Property(y => y.Longitude);
         });
 
-        
+
         base.OnModelCreating(modelBuilder);
     }
 }

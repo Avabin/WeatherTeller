@@ -9,10 +9,7 @@ internal partial class ConfigurationWizardView : ReactiveUserControl<Configurati
     public ConfigurationWizardView()
     {
         InitializeComponent();
-        
-        this.WhenActivated(disposables =>
-        {
-            
-        });
+
+        this.WhenActivated(disposables => { });
     }
 }

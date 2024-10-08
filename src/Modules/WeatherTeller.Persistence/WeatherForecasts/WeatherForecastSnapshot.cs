@@ -6,12 +6,12 @@ namespace WeatherTeller.Persistence.WeatherForecasts;
 public record WeatherForecastSnapshot(
     Id<ulong> Id,
     WeatherLocationSnapshot Location,
-    List<WeatherForecastDaySnapshot> Days) : IIdentifiable<ulong>
+    List<WeatherForecastDaySnapshot> Days,
+    DateTimeOffset CreatedAt) : IIdentifiable<ulong>
 {
     [MapperConstructor]
-    public WeatherForecastSnapshot() : this(Id<ulong>.Empty, WeatherLocationSnapshot.Empty, [])
+    public WeatherForecastSnapshot() : this(Id<ulong>.Empty, WeatherLocationSnapshot.Empty, [], DateTimeOffset.Now)
     {
-        
     }
 }
 
@@ -20,7 +20,6 @@ public record WeatherForecastDaySnapshot(DateOnly Date, WeatherStateSnapshot Sta
     [MapperConstructor]
     public WeatherForecastDaySnapshot() : this(DateOnly.MinValue, WeatherStateSnapshot.Empty)
     {
-        
     }
 }
 
@@ -33,23 +32,20 @@ public record WeatherStateSnapshot(
     double Pressure
 )
 {
-    public static WeatherStateSnapshot Empty => new();
-
     [MapperConstructor]
     public WeatherStateSnapshot() : this(WeatherLocationSnapshot.Empty, "", 0, 0, 0, 0)
     {
-        
     }
-}
 
+    public static WeatherStateSnapshot Empty => new();
+}
 
 public record WeatherLocationSnapshot(string City, string Country, double Latitude, double Longitude)
 {
-    public static WeatherLocationSnapshot Empty => new();
-
     [MapperConstructor]
     public WeatherLocationSnapshot() : this("", "", 0, 0)
     {
-        
     }
+
+    public static WeatherLocationSnapshot Empty => new();
 }

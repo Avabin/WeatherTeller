@@ -9,10 +9,7 @@ internal partial class WeatherForecastDayView : ReactiveUserControl<WeatherForec
     public WeatherForecastDayView()
     {
         InitializeComponent();
-        
-        this.WhenActivated(disposables =>
-        {
-            
-        });
+
+        this.WhenActivated(disposables => { });
     }
 }

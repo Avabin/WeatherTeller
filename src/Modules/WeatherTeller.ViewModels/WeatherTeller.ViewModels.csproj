@@ -8,14 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WeatherTeller.Services.Core\WeatherTeller.Services.Core.csproj" />
-      <ProjectReference Include="..\WeatherTeller.ViewModels.Core\WeatherTeller.ViewModels.Core.csproj" />
+        <ProjectReference Include="..\WeatherTeller.Services.Core\WeatherTeller.Services.Core.csproj"/>
+        <ProjectReference Include="..\WeatherTeller.ViewModels.Core\WeatherTeller.ViewModels.Core.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Autofac" Version="8.1.0" />
-      <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="12.1.0" />
-      <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+        <PackageReference Include="Autofac" Version="8.1.0"/>
+        <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="12.1.0"/>
+        <PackageReference Include="ReactiveUI.Fody" Version="19.5.41"/>
     </ItemGroup>
 
 </Project>

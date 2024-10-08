@@ -8,11 +8,11 @@ public record WeatherForecastDay(
     WeatherState State
 )
 {
-    public static WeatherForecastDay Empty => new();
     [MapperConstructor]
     public WeatherForecastDay() : this(DateOnly.MinValue, WeatherState.Empty)
     {
-        
     }
+
+    public static WeatherForecastDay Empty => new();
     [IgnoreDataMember] public bool IsToday => Date == DateOnly.FromDateTime(DateTime.UtcNow.Date);
 }

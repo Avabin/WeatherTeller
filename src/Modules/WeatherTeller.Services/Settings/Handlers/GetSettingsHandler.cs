@@ -6,7 +6,9 @@ using WeatherTeller.Services.Core.Settings.Requests;
 
 namespace WeatherTeller.Services.Settings.Handlers;
 
-internal class GetSettingsHandler(ISettingsRepository repository, ILogger<GetSettingsHandler> logger
+internal class GetSettingsHandler(
+    ISettingsRepository repository,
+    ILogger<GetSettingsHandler> logger
 ) : IRequestHandler<GetSettingsRequest, SettingsModel?>
 {
     private readonly ILogger<GetSettingsHandler> _logger = logger;

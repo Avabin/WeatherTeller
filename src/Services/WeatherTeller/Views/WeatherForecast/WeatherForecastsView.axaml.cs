@@ -9,7 +9,7 @@ internal partial class WeatherForecastsView : ReactiveUserControl<WeatherForecas
     public WeatherForecastsView()
     {
         InitializeComponent();
-        
+
         this.WhenActivated(disposables =>
         {
             // Add activation logic here

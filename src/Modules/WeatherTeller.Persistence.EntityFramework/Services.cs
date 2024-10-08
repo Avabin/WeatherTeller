@@ -19,7 +19,7 @@ public static class Services
 
         return services;
     }
-    
+
     // overload that requires only the db file path
     public static IServiceCollection AddWeatherTellerSqlite(this IServiceCollection services, string dbFilePath)
     {
@@ -27,18 +27,18 @@ public static class Services
 
         services.AddTransient<ISettingsDataSource, EntityFrameworkSettingsDataSource>();
         services.AddTransient<IWeatherDataSource, EntityFrameworkWeatherForecastDataSource>();
-        
+
 
         return services;
     }
-    
+
     public static IServiceCollection AddWeatherTellerInMem(this IServiceCollection services)
     {
         services.AddDbContextFactory<ApplicationDbContext>(options => options.UseInMemoryDatabase("WeatherTeller"));
 
         services.AddTransient<ISettingsDataSource, EntityFrameworkSettingsDataSource>();
         services.AddTransient<IWeatherDataSource, EntityFrameworkWeatherForecastDataSource>();
-        
+
 
         return services;
     }

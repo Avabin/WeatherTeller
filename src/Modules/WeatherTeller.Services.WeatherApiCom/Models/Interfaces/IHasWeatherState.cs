@@ -1,6 +1,6 @@
 namespace WeatherTeller.Services.WeatherApiCom.Models.Interfaces;
 
-public interface IHasWeatherState : 
+public interface IHasWeatherState :
     IHasPressureData,
     IHasWindData,
     IHasVisibilityData,

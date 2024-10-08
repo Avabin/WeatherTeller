@@ -4,34 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:weatherForecast="clr-namespace:WeatherTeller.ViewModels.WeatherForecast;assembly=WeatherTeller.ViewModels"
              xmlns:weatherForecast1="clr-namespace:WeatherTeller.Views.WeatherForecast"
-             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WeatherTeller.Views.WeatherForecast.WeatherForecastsView"
              x:DataType="weatherForecast:WeatherForecastsViewModel">
+    <UserControl.Resources>
+        <weatherForecast1:DoubleToIntConverter x:Key="DoubleToIntConverter" />
+    </UserControl.Resources>
     <Grid RowDefinitions="10*, Auto, Auto" ColumnDefinitions="*">
-        <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+        <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <ItemsRepeater ItemsSource="{Binding Forecasts}" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
                         <Expander HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5,0,5,5">
                             <Expander.Header>
-                                <Grid ColumnDefinitions="4*, *, 1*, 1*, 1*" Background="{DynamicResource SystemAltMediumColor}">
+                                <Grid ColumnDefinitions="4*, *, 1*, 1*, 1*"
+                                      Background="{DynamicResource SystemAltMediumColor}">
                                     <TextBlock
                                         Grid.Column="0"
                                         Text="{Binding Date, FallbackValue='', StringFormat='{}{0:dddd, dd MMMM yyyy}'}"
-                                        Margin="10" />
+                                        Margin="10" TextAlignment="Left" HorizontalAlignment="Stretch" />
+
+
                                     <TextBlock
                                         Grid.Column="2"
-                                        Text="{Binding State.TemperatureC, FallbackValue='', StringFormat='{}{0}°C'}"
-                                        Margin="10" />
+                                        Text="{Binding State.Pressure, FallbackValue='', StringFormat='{}{0}hPa', Converter={StaticResource DoubleToIntConverter}}"
+                                        Margin="10"
+                                        TextAlignment="Center" HorizontalAlignment="Stretch" />
                                     <TextBlock
                                         Grid.Column="3"
-                                        Text="{Binding State.Condition, FallbackValue=''}"
-                                        Margin="10" />
+                                        Text="{Binding State.TemperatureC, FallbackValue='', StringFormat='{}{0}°C'}"
+                                        Margin="10" TextAlignment="Right" HorizontalAlignment="Stretch" />
                                     <TextBlock
                                         Grid.Column="4"
                                         Text="{Binding State.Precipitation, FallbackValue='', StringFormat='{}{0}mm'}"
-                                        Margin="10" />
+                                        Margin="10"
+                                        TextAlignment="Right" HorizontalAlignment="Stretch" />
                                 </Grid>
                             </Expander.Header>
                             <weatherForecast1:WeatherForecastDayView DataContext="{Binding}"
@@ -48,7 +55,8 @@
 
         <Grid Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Button Content="Refresh" Command="{Binding RefreshCommand}" Margin="10,10,10,10"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center" />
         </Grid>
     </Grid>
 </UserControl>

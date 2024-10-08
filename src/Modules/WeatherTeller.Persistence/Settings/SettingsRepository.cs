@@ -12,13 +12,13 @@ namespace WeatherTeller.Persistence.Settings;
 
 internal class SettingsRepository : ISettingsRepository
 {
+    private readonly ILogger<SettingsRepository> _logger;
     private readonly IMediator _mediator;
     private readonly ISettingsDataSource _settingsDataSource;
-    private readonly ILogger<SettingsRepository> _logger;
-        
+
 
     public SettingsRepository(IMediator mediator,
-        ISettingsDataSource settingsDataSource, 
+        ISettingsDataSource settingsDataSource,
         ILogger<SettingsRepository> logger)
     {
         _mediator = mediator;
@@ -48,7 +48,7 @@ internal class SettingsRepository : ISettingsRepository
 
     public async Task UpdateSettingsAsync(Func<SettingsModel, SettingsModel> update)
     {
-       _logger.LogInformation("Updating settings for user {UserName}", Environment.UserName);
+        _logger.LogInformation("Updating settings for user {UserName}", Environment.UserName);
         var currentUserName = Environment.UserName;
         var exists = await _settingsDataSource.Contains(currentUserName);
         if (!exists)
@@ -62,20 +62,19 @@ internal class SettingsRepository : ISettingsRepository
         var updatedModel = update(settingsModel);
         var updatedSettings = updatedModel.ToPersistenceModel();
         await _settingsDataSource.ReplaceOne(currentUserName, updatedSettings);
-        
+
         _logger.LogDebug("Settings updated for user {UserName}", currentUserName);
         await _mediator.Publish(SettingsChangedNotification.Of(updatedModel, settingsModel));
     }
-
 }
 
 [Mapper]
 public static partial class SettingsRepositoryMapper
 {
-    internal static SettingsModel ToSettingsModel(this Persistence.Settings.Settings settings) =>
-        new(settings.Id,Location: settings.Location?.ToSettingsLocation(), settings.ApiKey ?? string.Empty);
+    internal static SettingsModel ToSettingsModel(this Settings settings) =>
+        new(settings.Id, settings.Location?.ToSettingsLocation(), settings.ApiKey ?? string.Empty);
 
-    public static Persistence.Settings.Settings ToPersistenceModel(this SettingsModel settings) =>
+    public static Settings ToPersistenceModel(this SettingsModel settings) =>
         new()
         {
             Id = settings.Id,
@@ -84,8 +83,10 @@ public static partial class SettingsRepositoryMapper
         };
 
     // From Location to SettingsLocation
-    public static SettingsLocation ToSettingsLocation(this Location location) => new(location.City, location.Latitude, location.Longitude);
-    
+    public static SettingsLocation ToSettingsLocation(this Location location) =>
+        new(location.City, location.Latitude, location.Longitude);
+
     // From SettingsLocation to Location
-    public static Location ToLocation(this SettingsLocation location) => new(location.City, location.Latitude, location.Longitude);
+    public static Location ToLocation(this SettingsLocation location) =>
+        new(location.City, location.Latitude, location.Longitude);
 }

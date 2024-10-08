@@ -1,11 +1,12 @@
-using Riok.Mapperly.Abstractions;
-using WeatherTeller.Services.WeatherApiCom.Models;
+using WeatherTeller.Services.Core.WeatherApi.Models;
+using WeatherLocation = WeatherTeller.Services.WeatherApiCom.Models.WeatherLocation;
 
 namespace WeatherTeller.Services.WeatherApiCom.Extensions;
 
-internal static class ModelsExtensions {
+internal static class ModelsExtensions
+{
     // From WeatherApiCom.Models.WeatherState to WeatherTeller.Services.Core.WeatherState
-    internal static Core.WeatherApi.Models.WeatherState ToCoreModel(this WeatherState weatherState, WeatherLocation location) =>
+    internal static WeatherState ToCoreModel(this Models.WeatherState weatherState, WeatherLocation location) =>
         new()
         {
             TemperatureC = weatherState.TempC,
@@ -17,7 +18,7 @@ internal static class ModelsExtensions {
         };
 
     // From WeatherApiCom.Models.WeatherForecast to WeatherTeller.Services.Core.WeatherForecast
-    internal static Core.WeatherApi.Models.WeatherForecast ToCoreModel(this WeatherForecast forecast,
+    internal static WeatherForecast ToCoreModel(this Models.WeatherForecast forecast,
         WeatherLocation location) =>
         new()
         {
@@ -29,11 +30,11 @@ internal static class ModelsExtensions {
         new(location.Name, location.Country, location.Lat, location.Lon);
 
     // From WeatherApiCom.Models.WeatherForecastDay to WeatherTeller.Services.Core.WeatherForecastDay
-    internal static Core.WeatherApi.Models.WeatherForecastDay ToCoreModel(this WeatherForecastDay forecastDay) =>
+    internal static WeatherForecastDay ToCoreModel(this Models.WeatherForecastDay forecastDay) =>
         new()
         {
             Date = DateOnly.FromDateTime(DateTimeOffset.Parse(forecastDay.Date).LocalDateTime),
-            State = new Core.WeatherApi.Models.WeatherState
+            State = new WeatherState
             {
                 TemperatureC = forecastDay.Day.AvgTempCelsius,
                 TemperatureF = forecastDay.Day.AvgTempFahrenheit,

@@ -10,7 +10,7 @@ public static class Services
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
         services.AddSingleton<ISettingsRepository, SettingsRepository>();
-        services.AddSingleton<IWeatherForecastRepository , WeatherForecastRepository>();
+        services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
 
         return services;
     }

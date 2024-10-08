@@ -14,19 +14,6 @@ namespace WeatherTeller.ViewModels.Settings;
 internal partial class SettingsViewModel : ViewModelBase, IActivatableViewModel, IRoutableViewModel
 {
     private readonly IMediator _mediator;
-    
-    [Reactive] public string ApiKey { get; set; } = string.Empty;
-    [Reactive] public double Latitude { get; set; } = 0;
-    [Reactive] public double Longitude { get; set; } = 0;
-
-    [ReactiveCommand]
-    private async Task SaveSettings()
-    {
-        await _mediator.Send(new UpdateSettingsCommand(Update));
-        return;
-
-        SettingsModel Update(SettingsModel settings) => settings with { ApiKey = ApiKey, Location = settings.Location with { Latitude = Latitude, Longitude = Longitude } };
-    }
 
     public SettingsViewModel(IMediator mediator, IScreen hostScreen)
     {
@@ -47,7 +34,23 @@ internal partial class SettingsViewModel : ViewModelBase, IActivatableViewModel,
         });
     }
 
+    [Reactive] public string ApiKey { get; set; } = string.Empty;
+    [Reactive] public double Latitude { get; set; }
+    [Reactive] public double Longitude { get; set; }
+
     public ViewModelActivator Activator { get; } = new();
     public string? UrlPathSegment => $"{nameof(SettingsViewModel)}@{GetHashCode()}";
     public IScreen HostScreen { get; }
+
+    [ReactiveCommand]
+    private async Task SaveSettings()
+    {
+        await _mediator.Send(new UpdateSettingsCommand(Update));
+        return;
+
+        SettingsModel Update(SettingsModel settings) => settings with
+        {
+            ApiKey = ApiKey, Location = settings.Location with { Latitude = Latitude, Longitude = Longitude }
+        };
+    }
 }

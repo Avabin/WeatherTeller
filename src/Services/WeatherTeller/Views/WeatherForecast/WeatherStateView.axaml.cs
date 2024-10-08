@@ -11,11 +11,8 @@ internal partial class WeatherStateView : ReactiveUserControl<WeatherStateViewMo
     public WeatherStateView()
     {
         InitializeComponent();
-        
-        this.WhenActivated(disposables =>
-        {
-            
-        });
+
+        this.WhenActivated(disposables => { });
     }
 }
 

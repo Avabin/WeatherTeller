@@ -9,10 +9,7 @@ internal partial class ConfigureLocationView : ReactiveUserControl<ConfigureLoca
     public ConfigureLocationView()
     {
         InitializeComponent();
-        
-        this.WhenActivated(disposables =>
-        {
-            
-        });
+
+        this.WhenActivated(disposables => { });
     }
 }

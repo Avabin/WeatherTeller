@@ -7,14 +7,16 @@ namespace WeatherTeller.Services.WeatherApi.Handlers;
 
 internal class UserRefreshWeatherForecastsHandler : IRequestHandler<RefreshWeatherForecastCommand>
 {
-    private readonly IWeatherApi _weatherApi;
     private readonly ILogger<UserRefreshWeatherForecastsHandler> _logger;
+    private readonly IWeatherApi _weatherApi;
 
-    public UserRefreshWeatherForecastsHandler(IWeatherApi weatherApi, ILogger<UserRefreshWeatherForecastsHandler> logger)
+    public UserRefreshWeatherForecastsHandler(IWeatherApi weatherApi,
+        ILogger<UserRefreshWeatherForecastsHandler> logger)
     {
         _weatherApi = weatherApi;
         _logger = logger;
     }
+
     public async Task Handle(RefreshWeatherForecastCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Refreshing weather forecasts by request");

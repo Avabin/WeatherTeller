@@ -10,8 +10,6 @@ internal partial class MainView : ReactiveUserControl<MainViewModel>
     {
         InitializeComponent();
 
-        this.WhenActivated(d =>
-        {
-        });
+        this.WhenActivated(d => { });
     }
 }

@@ -14,12 +14,9 @@ internal class GetGeolocationHandler : IRequestHandler<GetGeolocation, Geolocati
 {
     private readonly ILogger<GetGeolocationHandler> _logger;
 
-    public GetGeolocationHandler(ILogger<GetGeolocationHandler> logger)
-    {
-        _logger = logger;
-    }
-    
-    public async Task<Geolocation?> Handle(GetGeolocation request, CancellationToken cancellationToken) => 
+    public GetGeolocationHandler(ILogger<GetGeolocationHandler> logger) => _logger = logger;
+
+    public async Task<Geolocation?> Handle(GetGeolocation request, CancellationToken cancellationToken) =>
         await GetGeolocation();
 
     private async Task<Geolocation?> GetGeolocation()
@@ -28,14 +25,13 @@ internal class GetGeolocationHandler : IRequestHandler<GetGeolocation, Geolocati
         {
             var location = await Microsoft.Maui.Devices.Sensors.Geolocation.Default.GetLastKnownLocationAsync();
             if (location == null)
-            {
-                location = await Microsoft.Maui.Devices.Sensors.Geolocation.Default.GetLocationAsync(new GeolocationRequest()
-                {
-                    DesiredAccuracy = GeolocationAccuracy.Lowest,
-                    RequestFullAccuracy = false
-                });
-            }
-        
+                location = await Microsoft.Maui.Devices.Sensors.Geolocation.Default.GetLocationAsync(
+                    new GeolocationRequest
+                    {
+                        DesiredAccuracy = GeolocationAccuracy.Lowest,
+                        RequestFullAccuracy = false
+                    });
+
             return location == null ? null : new Geolocation(location.Latitude, location.Longitude);
         }
         catch (FeatureNotSupportedException e)

@@ -1,7 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:system="clr-namespace:System;assembly=System.Runtime"
-        xmlns:weatherForecast="clr-namespace:WeatherTeller.Views.WeatherForecast">
+        xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <Design.PreviewWith>
         <Border Padding="20">
             <DataGrid>
@@ -33,6 +32,6 @@
         <Setter Property="Padding" Value="5" />
         <Setter Property="Margin" Value="5" />
     </Style>
-    
+
 
 </Styles>

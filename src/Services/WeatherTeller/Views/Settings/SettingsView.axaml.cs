@@ -9,10 +9,7 @@ internal partial class SettingsView : ReactiveUserControl<SettingsViewModel>
     public SettingsView()
     {
         InitializeComponent();
-        
-        this.WhenActivated(disposables =>
-        {
-            
-        });
+
+        this.WhenActivated(disposables => { });
     }
 }

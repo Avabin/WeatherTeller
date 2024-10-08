@@ -5,14 +5,13 @@ using WeatherTeller.ViewModels.WeatherForecast.ForecastDay;
 
 namespace WeatherTeller.ViewModels.WeatherForecast;
 
-internal class WeatherForecastViewModel: ViewModelBase, IObserver<WeatherForecastDay>
+internal class WeatherForecastViewModel : ViewModelBase, IObserver<WeatherForecastDay>
 {
     private readonly ILogger<WeatherForecastViewModel> _logger;
 
-    public WeatherForecastViewModel(ILogger<WeatherForecastViewModel> logger, IWeatherForecastDayViewModelFactory weatherForecastDayViewModelFactory)
-    {
-        _logger = logger;
-    }
+    public WeatherForecastViewModel(ILogger<WeatherForecastViewModel> logger,
+        IWeatherForecastDayViewModelFactory weatherForecastDayViewModelFactory) => _logger = logger;
+
     public void OnCompleted() => _logger.LogInformation("Weather forecast completed");
 
     public void OnError(Exception error) => _logger.LogError(error, "Error in weather forecast");

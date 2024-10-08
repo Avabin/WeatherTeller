@@ -9,6 +9,7 @@ public class BoolToBrushConverter : IValueConverter
 {
     public IBrush TrueBrush { get; } = Brushes.Green;
     public IBrush FalseBrush { get; } = Brushes.DimGray;
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value switch
     {
         bool b => b ? TrueBrush : FalseBrush,
@@ -19,7 +20,7 @@ public class BoolToBrushConverter : IValueConverter
     {
         if (value is Brush brush)
             return brush == TrueBrush;
-        
+
         throw new ArgumentException("Value must be a Brush");
     }
 }
