@@ -14,7 +14,7 @@
         <weatherForecast1:DoubleToIntConverter x:Key="DoubleToIntConverter" />
     </UserControl.Resources>
     <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto">
-        <TextBlock IsEnabled="False" Text="{Binding Location, FallbackValue=''}" HorizontalAlignment="Center"
+        <TextBlock IsEnabled="False" Text="{Binding Location.City, FallbackValue=''}" HorizontalAlignment="Center"
                    VerticalAlignment="Top" Margin="10" />
         <TextBlock Grid.Row="1" IsEnabled="False"
                    Text="{Binding TemperatureC, FallbackValue='',StringFormat='{}{0}°C'}"

@@ -44,11 +44,11 @@ internal class LiteDbDataSource<T, TId>(ILiteDatabase liteDatabase, ILogger<Lite
         return observable.ToAsyncEnumerable();
     }
 
-    public IObservable<Unit> Add(T item) => Observable.Start(() =>
+    public IObservable<TId> Add(T item) => Observable.Start(() =>
     {
         _logger.LogTrace("Adding item {@item}", item);
         Collection.Insert(item);
-        return Unit.Default;
+        return item.Id.Value;
     }, _scheduler);
 
     private IEnumerable<T?> WhereSync(Func<T, bool>? predicate = null)
@@ -63,12 +63,14 @@ internal class LiteDbDataSource<T, TId>(ILiteDatabase liteDatabase, ILogger<Lite
         return query.ToEnumerable();
     }
 
-    public IObservable<Unit> AddRange(IEnumerable<T> items) =>
+    public IObservable<TId[]> AddRange(IEnumerable<T> items) =>
         Observable.Start(() =>
         {
-            _logger.LogTrace("Adding items {@items}", items);
-            Collection.InsertBulk(items);
-            return Unit.Default;
+            var identifiables = items.ToArray();
+            var itemCount = identifiables.Length;
+            _logger.LogTrace("Adding items {ItemsCount}", itemCount); 
+            Collection.InsertBulk(identifiables);
+            return identifiables.Select(x => x.Id.Value).ToArray();
         }, _scheduler);
 
     public IObservable<Unit> UpdateOne(Id<TId> id, Func<T, T> update) =>

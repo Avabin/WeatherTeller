@@ -9,7 +9,9 @@ internal class EntityFrameworkWeatherForecastDataSource : EntityFrameworkDataSou
     {
     }
 
-    protected override WeatherForecastSnapshot ToPersistence(WeatherForecastEntity entity) => entity.ToPersistence();
+    protected override WeatherForecastSnapshot ToPersistence(WeatherForecastEntity entity) =>
+        entity.ToPersistence();
 
-    protected override WeatherForecastEntity ToEntity(WeatherForecastSnapshot model) => model.ToEntity();
+    protected override WeatherForecastEntity ToEntity(WeatherForecastSnapshot model) =>
+        model.ToEntity();
 }

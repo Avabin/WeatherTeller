@@ -17,6 +17,7 @@ using Serilog.Events;
 using Serilog.Formatting.Compact;
 using Splat;
 using Splat.Autofac;
+using WeatherTeller.Persistence;
 using WeatherTeller.Persistence.EntityFramework;
 
 namespace WeatherTeller.Infrastructure;
@@ -90,26 +91,40 @@ public class AppHost
             env ??= Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (string.IsNullOrEmpty(env)) env = "";
 
-            Uri uri;
-            if (env.Equals("Development", StringComparison.OrdinalIgnoreCase))
+            var appSettingWritePath = System.IO.Path.Combine(Path, "appsettings.json");
+            var appSettingsDevWritePath = System.IO.Path.Combine(Path, "appsettings.Development.json");
+            var isDevelopment = env.Equals("Development", StringComparison.OrdinalIgnoreCase);
+            if (isDevelopment)
             {
-                builder.AddJsonFile("appsettings.Development.json", true);
-                uri = GetAssetUri("appsettings.Development.json");
+                var appsetingsDevUri = GetAssetUri("appsettings.Development.json");
+                // write default appsettings.json
+                var exists = File.Exists(appSettingsDevWritePath);
+                var resourceExists = AssetLoader.Exists(appsetingsDevUri);
+                if (!exists && resourceExists)
+                {
+                    using var stream = AssetLoader.Open(appsetingsDevUri);
+                    using var fileStream = File.Create(appSettingsDevWritePath);
+                    stream.CopyTo(fileStream);
+                }
             }
             else
             {
-                uri = GetAssetUri("appsettings.json");
+                var appsetingsUri = GetAssetUri("appsettings.json");
+                // write default appsettings.json
+                var exists = File.Exists(appSettingWritePath);
+                var resourceExists = AssetLoader.Exists(appsetingsUri);
+                if (!exists && resourceExists)
+                {
+                    using var stream = AssetLoader.Open(appsetingsUri);
+                    using var fileStream = File.Create(appSettingWritePath);
+                    stream.CopyTo(fileStream);
+                }
             }
 
-            if (AssetLoader.Exists(uri))
-            {
-                var stream = AssetLoader.Open(uri);
-                builder.AddJsonStream(stream);
-            }
-            else
-            {
-                throw new FileNotFoundException($"The resource {uri} could not be found.");
-            }
+            builder.AddJsonFile(isDevelopment ?
+                    appSettingsDevWritePath : 
+                    appSettingWritePath, 
+                optional: true, reloadOnChange: true);
         }
         else
         {
@@ -139,7 +154,9 @@ public class AppHost
         
         if (maybeSeqUrl != null)
         {
-            loggerConfiguration.WriteTo.Seq(maybeSeqUrl, LogEventLevel.Verbose);
+            loggerConfiguration
+                .MinimumLevel.Verbose()
+                .WriteTo.Seq(maybeSeqUrl, LogEventLevel.Verbose);
         }
         
         builder.AddSerilog(loggerConfiguration
@@ -150,9 +167,18 @@ public class AppHost
     {
         services.AddSingleton(ctx.HostingEnvironment.ContentRootFileProvider);
         services.AddSingleton(MessageBus.Current);
-        services.AddWeatherTellerSqlite(Design.IsDesignMode
-            ? System.IO.Path.Combine(Path, "teller-design.sqlite")
-            : System.IO.Path.Combine(Path, "teller.sqlite"));
+        services.AddPersistence();
+        var isDesign = Design.IsDesignMode;
+        if (isDesign)
+        {
+            services.AddWeatherTellerInMem();
+        }
+        else
+        {
+            services.AddWeatherTellerSqlite(Design.IsDesignMode
+                ? System.IO.Path.Combine(Path, "teller-design.sqlite")
+                : System.IO.Path.Combine(Path, "teller.sqlite"));
+        }
     }
 
     private void ConfigureContainer(ContainerBuilder builder)

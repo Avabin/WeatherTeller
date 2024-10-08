@@ -7,17 +7,17 @@
         <!-- Your existing UI elements -->
         <TextBox x:Name="ApiKeyTextBox"
                  Watermark="Enter API Key"
-                 Text="{Binding ApiKey}" />
+                 Text="{Binding ApiKey}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" />
 
         <TextBox Grid.Row="1" x:Name="LatitudeTextBox"
                  Watermark="Enter Latitude"
-                 Text="{Binding Latitude, Mode=TwoWay}" />
+                 Text="{Binding Latitude, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" />
 
         <TextBox Grid.Row="2" x:Name="LongitudeTextBox"
                  Watermark="Enter Longitude"
-                 Text="{Binding Longitude, Mode=TwoWay}" />
+                 Text="{Binding Longitude, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" />
 
         <Button Grid.Row="3" Content="Save Settings"
-                Command="{Binding SaveSettingsCommand}" />
+                Command="{Binding SaveSettingsCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" />
     </Grid>
 </UserControl>

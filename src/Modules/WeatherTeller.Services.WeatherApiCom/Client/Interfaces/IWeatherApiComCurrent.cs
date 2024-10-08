@@ -8,11 +8,6 @@ namespace WeatherTeller.Services.WeatherApiCom.Client.Interfaces;
 internal interface IWeatherApiComCurrent
 {
     /// <summary>
-    /// Gets an observable stream of the current weather state.
-    /// </summary>
-    internal IObservable<WeatherState> CurrentWeather { get; }
-
-    /// <summary>
     /// Gets an observable stream of the current location.
     /// </summary>
     internal IObservable<WeatherLocation> Location { get; }

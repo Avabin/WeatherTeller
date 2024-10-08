@@ -28,11 +28,14 @@ internal class WeatherApiComClient : IWeatherApiComClient, IDisposable
         await Current.SetApiKey(apiKey);
         await Forecast.SetApiKey(apiKey);
         
+        if (latitude == 0 && longitude == 0)
+        {
+            _logger.LogWarning("Latitude and longitude are both 0, skipping location setting");
+            return;
+        }
+        
         await Current.SetLocation(latitude, longitude);
         await Forecast.SetLocation(latitude, longitude);
-        
-        await Current.Refresh();
-        await Forecast.Refresh();
     }
 
     public void Dispose() => _disposables.Dispose();

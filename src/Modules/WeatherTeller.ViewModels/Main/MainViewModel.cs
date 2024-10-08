@@ -1,8 +1,11 @@
-﻿using System.Reactive.Linq;
+﻿using System.Collections.Immutable;
+using System.Reactive.Linq;
 using Commons.ReactiveCommandGenerator.Core;
 using MediatR;
 using ReactiveUI;
 using WeatherTeller.Services.Core.Settings.Requests;
+using WeatherTeller.Services.Core.WeatherApi.Notifications;
+using WeatherTeller.Services.Core.WeatherForecasts.Requests;
 using WeatherTeller.ViewModels.Configuration;
 using WeatherTeller.ViewModels.Core;
 using WeatherTeller.ViewModels.Settings;
@@ -28,7 +31,7 @@ internal partial class MainViewModel(
     {
         var settings = await _mediator.Send(new GetSettingsRequest());
         var hasApiKey = !string.IsNullOrWhiteSpace(settings?.ApiKey);
-        var hasLocation = settings?.Location is not null && !string.IsNullOrWhiteSpace(settings.Location.Name) && settings.Location.Latitude != 0 && settings.Location.Longitude != 0;
+        var hasLocation = settings?.Location is not null && settings.Location.Latitude != 0 && settings.Location.Longitude != 0;
         
         var needsConfiguration = !hasApiKey || !hasLocation;
         if (!needsConfiguration)
@@ -40,6 +43,26 @@ internal partial class MainViewModel(
         
         Router.NavigationStack.Add(_weatherForecastsLazy.Value);
         await Router.Navigate.Execute(wizard);
+    }
+
+    [ReactiveCommand]
+    private async Task LoadWeatherForecasts()
+    {
+        var forecasts = await _mediator.Send(new GetWeatherForecasts());
+        var firstForecast = forecasts.FirstOrDefault();
+        if (firstForecast is null)
+            return;
+        
+        var days = firstForecast.Days.OrderBy(x => x.Date).ToList();
+        // delete all forecasts that are in the past
+        days.RemoveAll(x => x.Date < DateOnly.FromDateTime(DateTime.Now));
+        var today = days.FirstOrDefault();
+        var afterToday = days[1..];
+        if (today is not null)
+            await _mediator.Publish(new CurrentWeatherStateChangedNotification(today.State));
+        
+        if (afterToday.Any())
+            await _mediator.Publish(new DaysForecastStateChangedNotification(afterToday.ToImmutableList()));
     }
     
     [ReactiveCommand]

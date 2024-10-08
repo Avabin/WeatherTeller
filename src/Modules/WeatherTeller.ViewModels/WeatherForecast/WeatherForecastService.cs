@@ -3,7 +3,7 @@ using System.Reactive.Subjects;
 using DynamicData;
 using MediatR;
 using WeatherTeller.Services.Core.WeatherApi.Models;
-using WeatherTeller.Services.Core.WeatherForecast.Requests;
+using WeatherTeller.Services.Core.WeatherForecasts.Requests;
 using WeatherTeller.ViewModels.WeatherForecast.ForecastDay;
 
 namespace WeatherTeller.ViewModels.WeatherForecast;
@@ -13,7 +13,7 @@ internal class WeatherForecastService : IWeatherForecastService
     private readonly IWeatherForecastDayViewModelFactory _weatherForecastDayViewModelFactory;
     private readonly IWeatherStateViewModelFactory _weatherStateViewModelFactory;
     private readonly IMediator _mediator;
-    public SourceCache<WeatherForecastDayViewModel, DateTimeOffset> WeatherForecast { get; } = new(x => x.Date);
+    public SourceCache<WeatherForecastDayViewModel, DateOnly> WeatherForecast { get; } = new(x => x.Date);
     
     private ISubject<WeatherStateViewModel> _currentWeatherState = new ReplaySubject<WeatherStateViewModel>(1);
     public IObservable<WeatherStateViewModel> CurrentWeatherState => _currentWeatherState.AsObservable();
@@ -25,7 +25,7 @@ internal class WeatherForecastService : IWeatherForecastService
         _mediator = mediator;
     }
 
-    public IObservable<IChangeSet<WeatherForecastDayViewModel, DateTimeOffset>> Connect() => WeatherForecast.Connect();
+    public IObservable<IChangeSet<WeatherForecastDayViewModel, DateOnly>> Connect() => WeatherForecast.Connect();
     public void Add(WeatherForecastDay forecastDay)
     {
         var vm = _weatherForecastDayViewModelFactory.Create(forecastDay);

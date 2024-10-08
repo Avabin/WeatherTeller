@@ -9,16 +9,13 @@ public static class Services
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddSingleton<ISettingsRepository, SettingsRepository>();
-        
         services.AddHostedService<CheckGeolocationHostedService>();
-        services.AddHostedService<RefreshingBackgroundService>();
         services.AddHostedService<LoadSettingsStartupTask>();
-        services.AddHostedService<CurrentWeatherStatePublisher>();
+        services.AddHostedService<WeatherForecastPublisher>();
         services.AddHostedService<DaysForecastPublisher>();
         services.AddMediatR(configuration =>
         {
-            configuration.RegisterServicesFromAssemblyContaining<SettingsRepository>();
+            configuration.RegisterServicesFromAssemblyContaining<DaysForecastPublisher>();
         });
         
         return services;

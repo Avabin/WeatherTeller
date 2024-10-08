@@ -1,8 +1,8 @@
 ﻿using WeatherTeller.Services.Core.Settings;
 
-namespace WeatherTeller.Services.Settings;
+namespace WeatherTeller.Persistence.Core;
 
-internal interface ISettingsRepository
+public interface ISettingsRepository
 {
     Task<SettingsModel?> GetSettingsAsync();
     

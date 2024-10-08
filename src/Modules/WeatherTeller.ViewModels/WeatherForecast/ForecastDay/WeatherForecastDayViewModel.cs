@@ -10,7 +10,7 @@ internal class WeatherForecastDayViewModel : ViewModelBase
         Date = day.Date;
         State = weatherStateViewModelFactory.Create(day.State);
     }
-
-    public DateTimeOffset Date { get; }
+    
+    public DateOnly Date { get; }
     public WeatherStateViewModel State { get; }
 }

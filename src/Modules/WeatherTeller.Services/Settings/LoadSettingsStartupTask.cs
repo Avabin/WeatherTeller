@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Hosting;
+using WeatherTeller.Persistence.Core;
 using WeatherTeller.Services.Core.Settings;
 
 namespace WeatherTeller.Services.Settings;

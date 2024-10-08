@@ -1,16 +1,16 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using WeatherTeller.Services.Core.WeatherApi;
-using WeatherTeller.Services.Core.WeatherForecast.Requests;
+using WeatherTeller.Services.Core.WeatherForecasts.Requests;
 
 namespace WeatherTeller.Services.WeatherApi.Handlers;
 
-internal class RefreshWeatherForecastsHandler : IRequestHandler<RefreshWeatherForecastCommand>
+internal class UserRefreshWeatherForecastsHandler : IRequestHandler<RefreshWeatherForecastCommand>
 {
     private readonly IWeatherApi _weatherApi;
-    private readonly ILogger<RefreshWeatherForecastsHandler> _logger;
+    private readonly ILogger<UserRefreshWeatherForecastsHandler> _logger;
 
-    public RefreshWeatherForecastsHandler(IWeatherApi weatherApi, ILogger<RefreshWeatherForecastsHandler> logger)
+    public UserRefreshWeatherForecastsHandler(IWeatherApi weatherApi, ILogger<UserRefreshWeatherForecastsHandler> logger)
     {
         _weatherApi = weatherApi;
         _logger = logger;

@@ -1,7 +1,7 @@
 ﻿namespace WeatherTeller.Services.Core.WeatherApi.Models;
 
-public readonly record struct WeatherState(
-    string Location,
+public record WeatherState(
+    WeatherLocation Location,
     string Condition,
     double TemperatureC,
     double TemperatureF,
@@ -9,4 +9,9 @@ public readonly record struct WeatherState(
     double Pressure
 )
 {
+    public static WeatherState Empty => new();
+    public WeatherState() : this(WeatherLocation.Empty, "", 0, 0, 0, 0)
+    {
+        
+    }
 }

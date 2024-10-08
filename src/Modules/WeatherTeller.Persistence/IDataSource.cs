@@ -1,6 +1,11 @@
 ﻿using System.Reactive;
+using System.Runtime.CompilerServices;
 using WeatherTeller.Persistence.Models;
 
+[assembly: InternalsVisibleTo("WeatherTeller.Persistence.EntityFramework")]
+[assembly: InternalsVisibleTo("WeatherTeller.Persistence.LiteDb")]
+[assembly: InternalsVisibleTo("WeatherTeller.Persistence.UnitTests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace WeatherTeller.Persistence;
 
 /// <summary>
@@ -8,7 +13,7 @@ namespace WeatherTeller.Persistence;
 /// </summary>
 /// <typeparam name="T">The type of the items in the data source.</typeparam>
 /// <typeparam name="TId">The type of the id of the items in the data source.</typeparam>
-public interface IDataSource<T, TId> where T : IIdentifiable<TId> where TId : IComparable<TId>
+internal interface IDataSource<T, TId> where T : IIdentifiable<TId> where TId : IComparable<TId>
 {
     /// <summary>
     /// Returns an async enumerable of items that satisfy the predicate.
@@ -21,15 +26,15 @@ public interface IDataSource<T, TId> where T : IIdentifiable<TId> where TId : IC
     /// Adds an item to the data source.
     /// </summary>
     /// <param name="item">The item to add.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    IObservable<Unit> Add(T item);
+    /// <returns>Saved entity id.</returns>
+    IObservable<TId> Add(T item);
 
     /// <summary>
     /// Adds a range of items to the data source.
     /// </summary>
     /// <param name="items">The items to add.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    IObservable<Unit> AddRange(IEnumerable<T> items);
+    IObservable<TId[]> AddRange(IEnumerable<T> items);
 
     /// <summary>
     /// Updates an item in the data source.

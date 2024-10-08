@@ -1,6 +1,6 @@
 ﻿namespace WeatherTeller.Persistence.WeatherForecasts;
 
-public interface IWeatherDataSource
+internal interface IWeatherDataSource : IDataSource<WeatherForecastSnapshot, ulong>
 {
     
 }

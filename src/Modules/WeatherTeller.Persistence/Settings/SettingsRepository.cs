@@ -3,11 +3,12 @@ using System.Reactive.Linq;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Riok.Mapperly.Abstractions;
+using WeatherTeller.Persistence.Core;
+using WeatherTeller.Persistence.Core.Notifications;
 using WeatherTeller.Persistence.Models;
-using WeatherTeller.Persistence.Settings;
 using WeatherTeller.Services.Core.Settings;
 
-namespace WeatherTeller.Services.Settings;
+namespace WeatherTeller.Persistence.Settings;
 
 internal class SettingsRepository : ISettingsRepository
 {
@@ -27,14 +28,13 @@ internal class SettingsRepository : ISettingsRepository
 
     public async Task<SettingsModel?> GetSettingsAsync()
     {
+        _logger.LogInformation("Getting settings for user {UserName}", Environment.UserName);
         var currentUserName = Environment.UserName;
         var settings = await _settingsDataSource.GetById(currentUserName)
             .ObserveOn(TaskPoolScheduler.Default)
             .FirstOrDefaultAsync();
         if (settings is not null)
-        {
             return settings.ToSettingsModel();
-        }
         _logger.LogWarning("Settings not found for user {UserName}", currentUserName);
         return null;
     }
@@ -43,26 +43,28 @@ internal class SettingsRepository : ISettingsRepository
     {
         _logger.LogInformation("Creating settings for user {UserName}", Environment.UserName);
         await _settingsDataSource.Add(settings.ToPersistenceModel());
-        await _mediator.Publish(SettingsEntityChangedNotification.Of(settings));
+        await _mediator.Publish(SettingsChangedNotification.Of(settings));
     }
 
     public async Task UpdateSettingsAsync(Func<SettingsModel, SettingsModel> update)
     {
+       _logger.LogInformation("Updating settings for user {UserName}", Environment.UserName);
         var currentUserName = Environment.UserName;
-        var settings = await _settingsDataSource.GetById(currentUserName);
-        if (settings is null)
+        var exists = await _settingsDataSource.Contains(currentUserName);
+        if (!exists)
         {
             _logger.LogWarning("Settings not found for user {UserName}", currentUserName);
             return;
         }
 
-        var settingsModel = settings.ToSettingsModel();
+        var settings = await _settingsDataSource.GetById(currentUserName);
+        var settingsModel = settings!.ToSettingsModel();
         var updatedModel = update(settingsModel);
         var updatedSettings = updatedModel.ToPersistenceModel();
         await _settingsDataSource.ReplaceOne(currentUserName, updatedSettings);
         
-        _logger.LogInformation("Settings updated for user {UserName}", currentUserName);
-        await _mediator.Publish(SettingsEntityChangedNotification.Of(updatedModel, settingsModel));
+        _logger.LogDebug("Settings updated for user {UserName}", currentUserName);
+        await _mediator.Publish(SettingsChangedNotification.Of(updatedModel, settingsModel));
     }
 
 }
@@ -82,8 +84,8 @@ public static partial class SettingsRepositoryMapper
         };
 
     // From Location to SettingsLocation
-    public static SettingsLocation ToSettingsLocation(this Location location) => new(location.Name, location.Latitude, location.Longitude);
+    public static SettingsLocation ToSettingsLocation(this Location location) => new(location.City, location.Latitude, location.Longitude);
     
     // From SettingsLocation to Location
-    public static Location ToLocation(this SettingsLocation location) => new(location.Name, location.Latitude, location.Longitude);
+    public static Location ToLocation(this SettingsLocation location) => new(location.City, location.Latitude, location.Longitude);
 }

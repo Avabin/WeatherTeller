@@ -10,7 +10,6 @@ namespace WeatherTeller.ViewModels.Configuration;
 internal partial class ConfigureLocationViewModel : ConfigurationViewModel
 {
     private readonly IMediator _mediator;
-    [Reactive] public string LocationName { get; set; } = string.Empty;
     [Reactive] public double Latitude { get; set; }
     [Reactive] public double Longitude { get; set; }
     
@@ -23,10 +22,9 @@ internal partial class ConfigureLocationViewModel : ConfigurationViewModel
     private async Task Load()
     {
         var settings = await _mediator.Send(new GetSettingsRequest());
-        var location = settings.Location;
+        var location = settings?.Location;
         if (location is not null)
         {
-            LocationName = location.Name;
             Latitude = location.Latitude;
             Longitude = location.Longitude;
         }
@@ -35,11 +33,7 @@ internal partial class ConfigureLocationViewModel : ConfigurationViewModel
     [ReactiveCommand]
     private async Task Save()
     {
-        if (string.IsNullOrWhiteSpace(LocationName) || Latitude == 0 || Longitude == 0)
-        {
-            return;
-        }
-        var settingsLocation = new SettingsLocation(LocationName, Latitude, Longitude);
+        var settingsLocation = new SettingsLocation("", Latitude, Longitude);
         await _mediator.Send(new UpdateSettingsCommand(s => s with { Location = settingsLocation }));
         IsFinished = true;
     }

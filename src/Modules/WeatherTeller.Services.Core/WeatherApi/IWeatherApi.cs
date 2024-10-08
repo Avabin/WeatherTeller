@@ -5,7 +5,7 @@ namespace WeatherTeller.Services.Core.WeatherApi;
 
 public interface IWeatherApi
 {
-    IObservable<WeatherState> Current { get; }
+    IObservable<WeatherForecastDay> Current { get; }
     IObservable<ImmutableList<WeatherForecastDay>> Days { get; }
     
     Task SetLocation(double latitude, double longitude);

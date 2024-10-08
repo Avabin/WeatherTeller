@@ -31,4 +31,15 @@ public static class Services
 
         return services;
     }
+    
+    public static IServiceCollection AddWeatherTellerInMem(this IServiceCollection services)
+    {
+        services.AddDbContextFactory<ApplicationDbContext>(options => options.UseInMemoryDatabase("WeatherTeller"));
+
+        services.AddTransient<ISettingsDataSource, EntityFrameworkSettingsDataSource>();
+        services.AddTransient<IWeatherDataSource, EntityFrameworkWeatherForecastDataSource>();
+        
+
+        return services;
+    }
 }

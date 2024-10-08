@@ -1,13 +1,21 @@
 ﻿using MediatR;
-using WeatherTeller.Services.Settings;
+using Microsoft.Extensions.Logging;
+using WeatherTeller.Persistence.Core.Notifications;
 using WeatherTeller.Services.WeatherApiCom.Client.Interfaces;
 
 namespace WeatherTeller.Services.WeatherApiCom.Handlers;
 
-internal class WeatherApiComSettingsChangedNotificationHandler(IWeatherApiComClient weatherApiComClient)
-    : INotificationHandler<SettingsEntityChangedNotification>
+internal class WeatherApiComSettingsChangedNotificationHandler(IWeatherApiComClient weatherApiComClient, ILogger<WeatherApiComSettingsChangedNotificationHandler> logger)
+    : INotificationHandler<SettingsChangedNotification>
 {
-    public async Task Handle(SettingsEntityChangedNotification notification, CancellationToken cancellationToken) =>
-        await weatherApiComClient.SetSettings(notification.After.ApiKey!, notification.After.Location?.Latitude ?? 0,
-            notification.After.Location?.Longitude ?? 0);
+    private readonly IWeatherApiComClient _weatherApiComClient = weatherApiComClient;
+    private readonly ILogger<WeatherApiComSettingsChangedNotificationHandler> _logger = logger;
+
+    public async Task Handle(SettingsChangedNotification notification, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Handling settings change notification for WeatherApiCom");
+        var settings = notification.After;
+        await _weatherApiComClient.SetSettings(settings.ApiKey, settings.Location?.Latitude ?? 0, settings.Location?.Longitude ?? 0);
+    }
+        
 }

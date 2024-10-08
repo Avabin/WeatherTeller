@@ -33,11 +33,12 @@ internal class WeatherApiComForecast : IWeatherApiComForecast
         _logger = logger;
     }
 
-    private ISubject<Models.WeatherForecast> _forecast = new ReplaySubject<Models.WeatherForecast>(1);
-    public IObservable<Models.WeatherForecast> Forecast => _forecast;
+    private ISubject<WeatherForecast> _forecast = new ReplaySubject<WeatherForecast>(1);
+    public IObservable<WeatherForecast> Forecast => _forecast;
 
     public Task SetLocation(double latitude, double longitude)
     {
+        _logger.LogInformation("Setting location to {Latitude}, {Longitude}", latitude, longitude);
         _latitude = latitude;
         _longitude = longitude;
         return Task.CompletedTask;

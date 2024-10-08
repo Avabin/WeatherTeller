@@ -26,7 +26,14 @@ internal class ApplicationDbContext : DbContext
             x.OwnsOne(y => y.State);
             x.Property(y => y.Date);
         });
-        modelBuilder.Entity<WeatherForecastEntity>().Property(x => x.Location);
+        modelBuilder.Entity<WeatherForecastEntity>().Property(x => x.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<WeatherForecastEntity>().OwnsOne(x => x.Location, x =>
+        {
+            x.Property(y => y.City);
+            x.Property(y => y.Country);
+            x.Property(y => y.Latitude);
+            x.Property(y => y.Longitude);
+        });
 
         
         base.OnModelCreating(modelBuilder);

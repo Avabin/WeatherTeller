@@ -6,7 +6,7 @@ namespace WeatherTeller.ViewModels.WeatherForecast;
 
 internal class WeatherStateViewModel : ViewModelBase
 {
-    [Reactive] public string Location { get; set; }
+    [Reactive] public WeatherLocationViewModel Location { get; set; }
     [Reactive] public string Condition { get; set; }
     [Reactive] public double TemperatureC { get; set; }
     [Reactive] public double TemperatureF { get; set; }
@@ -16,7 +16,7 @@ internal class WeatherStateViewModel : ViewModelBase
 
     public WeatherStateViewModel(WeatherState state)
     {
-        Location = state.Location;
+        Location = new WeatherLocationViewModel(state.Location);
         Condition = state.Condition;
         TemperatureC = state.TemperatureC;
         TemperatureF = state.TemperatureF;
@@ -24,3 +24,19 @@ internal class WeatherStateViewModel : ViewModelBase
         Pressure = state.Pressure;
     }
 }
+
+internal class WeatherLocationViewModel : ViewModelBase
+{
+    [Reactive] public string City { get; set; }
+    [Reactive] public string Country { get; set; }
+    [Reactive] public double Latitude { get; set; }
+    [Reactive] public double Longitude { get; set; }
+
+    public WeatherLocationViewModel(WeatherLocation location)
+    {
+        City = location.City;
+        Country = location.Country;
+        Latitude = location.Latitude;
+        Longitude = location.Longitude;
+    }
+} 

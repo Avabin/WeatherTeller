@@ -25,7 +25,7 @@ internal partial class SettingsViewModel : ViewModelBase, IActivatableViewModel,
         await _mediator.Send(new UpdateSettingsCommand(Update));
         return;
 
-        SettingsModel Update(SettingsModel settings) => settings with { ApiKey = ApiKey, Location = new SettingsLocation("New York", Latitude, Longitude), };
+        SettingsModel Update(SettingsModel settings) => settings with { ApiKey = ApiKey, Location = settings.Location with { Latitude = Latitude, Longitude = Longitude } };
     }
 
     public SettingsViewModel(IMediator mediator, IScreen hostScreen)
@@ -39,9 +39,9 @@ internal partial class SettingsViewModel : ViewModelBase, IActivatableViewModel,
                 .ToObservable()
                 .Subscribe(settings =>
                 {
-                    ApiKey = settings.ApiKey ?? string.Empty;
-                    Latitude = settings.Location?.Latitude ?? 0;
-                    Longitude = settings.Location?.Longitude ?? 0;
+                    ApiKey = settings?.ApiKey ?? string.Empty;
+                    Latitude = settings?.Location?.Latitude ?? 0;
+                    Longitude = settings?.Location?.Longitude ?? 0;
                 })
                 .DisposeWith(disposables);
         });

@@ -30,20 +30,26 @@ internal abstract class EntityFrameworkDataSourceBase<TEntity, T, TId> : IDataSo
             asyncEnumerable.Where(predicate);
     }
 
-    public IObservable<Unit> Add(T item) =>
+    public IObservable<TId> Add(T item) =>
         Observable.FromAsync(async token =>
         {
             var dbContext = DbContext();
-            await dbContext.Set<TEntity>().AddAsync(ToEntity(item), token);
+            var entry = await dbContext.Set<TEntity>().AddAsync(ToEntity(item), token);
             await dbContext.SaveChangesAsync(token);
+            var id = entry.Entity.Id;
+            return id;
         });
 
-    public IObservable<Unit> AddRange(IEnumerable<T> items) =>
+    public IObservable<TId[]> AddRange(IEnumerable<T> items) =>
         Observable.FromAsync(async token =>
         {
             var dbContext = DbContext();
             await dbContext.Set<TEntity>().AddRangeAsync(items.Select(ToEntity), token);
             await dbContext.SaveChangesAsync(token);
+            var entries = dbContext.ChangeTracker.Entries<TEntity>().ToList();
+            var filteredEntries = entries.Where(x => x.State == EntityState.Added).ToList();
+            var ids = filteredEntries.Select(x => x.Entity.Id).ToArray();
+            return ids;
         });
 
     public IObservable<Unit> UpdateOne(Id<TId> id, Func<T, T> update) =>

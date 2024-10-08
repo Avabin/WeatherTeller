@@ -20,7 +20,7 @@ internal partial class ConfigureApiKeyViewModel : ConfigurationViewModel
     private async Task Load()
     {
         var settings = await _mediator.Send(new GetSettingsRequest());
-        ApiKey = settings.ApiKey;
+        ApiKey = settings?.ApiKey ?? string.Empty;
     }
     
     [ReactiveCommand]
