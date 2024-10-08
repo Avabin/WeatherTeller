@@ -23,8 +23,6 @@
         <TextBlock Grid.Row="3" IsEnabled="False"
                    Text="{Binding Precipitation, FallbackValue='',StringFormat='{}{0}mm'}"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" />
-
-        <!-- Pressure information without decimal places -->
         <TextBlock Grid.Row="4" IsEnabled="False"
                    Text="{Binding Pressure, FallbackValue='',Converter={StaticResource DoubleToIntConverter},StringFormat='{}{0}hPa'}"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" />

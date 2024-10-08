@@ -23,19 +23,20 @@ internal static class ModelsExtensions
         new()
         {
             Location = location.ToCoreModel(),
-            Days = forecast.Days.Select(day => day.ToCoreModel()).OrderBy(day => day.Date).ToList()
+            Days = forecast.Days.Select(day => day.ToCoreModel(location)).OrderBy(day => day.Date).ToList()
         };
 
     internal static Core.WeatherApi.Models.WeatherLocation ToCoreModel(this WeatherLocation location) =>
         new(location.Name, location.Country, location.Lat, location.Lon);
 
     // From WeatherApiCom.Models.WeatherForecastDay to WeatherTeller.Services.Core.WeatherForecastDay
-    internal static WeatherForecastDay ToCoreModel(this Models.WeatherForecastDay forecastDay) =>
+    internal static WeatherForecastDay ToCoreModel(this Models.WeatherForecastDay forecastDay, WeatherLocation location) =>
         new()
         {
             Date = DateOnly.FromDateTime(DateTimeOffset.Parse(forecastDay.Date).LocalDateTime),
             State = new WeatherState
             {
+                Location = location.ToCoreModel(),
                 TemperatureC = forecastDay.Day.AvgTempCelsius,
                 TemperatureF = forecastDay.Day.AvgTempFahrenheit,
                 Condition = forecastDay.Day.Condition.Text,
